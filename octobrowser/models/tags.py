@@ -32,12 +32,12 @@ class TagOut(OctoModel):
 class TagResponse(OctoModel):
     success: bool = True
     msg: str = ""
-    code: str = ""
+    code: Optional[str] = None
     data: Optional[TagOut] = None
 
 
 class TagsResponse(OctoModel):
     success: bool = True
     msg: str = ""
-    code: str = ""
+    code: Optional[str] = None
     data: List[TagOut] = Field(default_factory=list)

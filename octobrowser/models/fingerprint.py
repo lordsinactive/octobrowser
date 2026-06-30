@@ -133,15 +133,18 @@ class RenderersRespBaseSpec(OctoModel):
     data: List[FingerprintDataOutBaseSpec] = Field(default_factory=list)
     total_count: int = 0
     page: int = 0
+    code: Optional[str] = None
 
 
 class ScreensRespBaseSpec(OctoModel):
     success: bool = True
     msg: str = ""
     data: List[FingerprintDataOutBaseSpec] = Field(default_factory=list)
+    code: Optional[str] = None
 
 
 class DeviceModelsResponse(OctoModel):
     success: bool = True
     msg: str = ""
     data: List[DeviceModelOut] = Field(default_factory=list)
+    code: Optional[str] = None

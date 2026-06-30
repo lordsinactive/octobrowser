@@ -4,9 +4,11 @@ from ._base import OctoModel
 from .action_log import ActionLogEntry, ActionLogStreamPage, ActionLogWatermark
 from .common import (
     BaseErrorResponse,
+    CloudValidationError,
     DefaultResp,
     HTTPValidationError,
     ValidationError,
+    ValidationErrorItem,
 )
 from .fingerprint import (
     DeviceModelOut,
@@ -40,6 +42,7 @@ from .local import (
     StartRequest,
     StopRequest,
     UpdatesJson,
+    UsernameOut,
 )
 from .profiles import (
     Bookmark,
@@ -47,6 +50,7 @@ from .profiles import (
     CookiesRequest,
     DeleteProfileRequest,
     ExportProfilesData,
+    MassForceStopRequest,
     ImportDataV1,
     ImportDataV2,
     ImportFileV1,
@@ -55,6 +59,9 @@ from .profiles import (
     ProfileCreateRequestAutomation,
     ProfileCreatedResp,
     ProfileForceStopRequest,
+    ProfileOut,
+    ProfileProxyOut,
+    ProfileResp,
     ProfileUpdateRequest,
     ProfilesResp,
     SetProfilePasswordRequestAutomation,
@@ -101,6 +108,8 @@ __all__ = [
     "BaseErrorResponse",
     "ValidationError",
     "HTTPValidationError",
+    "ValidationErrorItem",
+    "CloudValidationError",
     "GeoData",
     "GeolocationIn",
     "LanguagesIn",
@@ -130,12 +139,16 @@ __all__ = [
     "Bookmark",
     "StorageOptions",
     "CookiesRequest",
+    "ProfileProxyOut",
+    "ProfileOut",
     "ProfileCreateRequestAutomation",
     "ProfileUpdateRequest",
     "ProfilesResp",
+    "ProfileResp",
     "ProfileCreatedResp",
     "DeleteProfileRequest",
     "ProfileForceStopRequest",
+    "MassForceStopRequest",
     "SetProfilePasswordRequestAutomation",
     "ClearProfilePasswordRequestAutomation",
     "TransferProfilesRequest",
@@ -178,4 +191,5 @@ __all__ = [
     "ResponseOut",
     "ActiveProfilesOut",
     "GetUpdatesOut",
+    "UsernameOut",
 ]

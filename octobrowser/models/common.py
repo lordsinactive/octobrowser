@@ -10,20 +10,22 @@ __all__ = [
     "BaseErrorResponse",
     "ValidationError",
     "HTTPValidationError",
+    "ValidationErrorItem",
+    "CloudValidationError",
 ]
 
 
 class DefaultResp(OctoModel):
     success: bool = True
     msg: str = ""
-    code: str = ""
+    code: Optional[str] = None
     data: Optional[Union[str, List[Any], Dict[str, Any]]] = None
 
 
 class BaseErrorResponse(OctoModel):
     success: bool = False
     msg: str = "Error detail"
-    code: ErrorCode
+    code: Union[ErrorCode, str] = Field(union_mode="left_to_right")
     data: Optional[Union[str, List[Any], Dict[str, Any]]] = None
 
 
@@ -35,3 +37,14 @@ class ValidationError(OctoModel):
 
 class HTTPValidationError(OctoModel):
     detail: List[ValidationError] = Field(default_factory=list)
+
+
+class ValidationErrorItem(OctoModel):
+    type: Optional[str] = None
+    loc: List[Union[str, int]] = Field(default_factory=list)
+    msg: Optional[str] = None
+    input: Any = None
+
+
+class CloudValidationError(OctoModel):
+    validation_error: Dict[str, List[ValidationErrorItem]] = Field(default_factory=dict)

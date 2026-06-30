@@ -16,6 +16,7 @@ __all__ = [
     "OkOut",
     "ErrorOut",
     "UpdatesJson",
+    "UsernameOut",
     "StartProfileOut",
     "ResponseOut",
     "ActiveProfilesOut",
@@ -82,7 +83,7 @@ class OkOut(OctoModel):
 
 
 class ErrorOut(OctoModel):
-    code: str
+    code: Optional[str] = None
     error: str
     error_code: int = -1
 
@@ -91,6 +92,10 @@ class UpdatesJson(OctoModel):
     current: str
     latest: str
     update_required: bool
+
+
+class UsernameOut(OctoModel):
+    username: str
 
 
 class StartProfileOut(RootModel[Union[BrowserJson, ErrorOut]]):

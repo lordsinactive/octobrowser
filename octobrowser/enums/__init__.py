@@ -14,6 +14,7 @@ from .fingerprint import (
     RAMVariant,
     WindowsVersion,
 )
+from .profiles import ProfileField
 from .proxy import ProxyType
 
 __all__ = [
@@ -30,5 +31,6 @@ __all__ = [
     "WindowsVersion",
     "MacOSVersion",
     "AndroidVersion",
+    "ProfileField",
     "ProxyType",
 ]

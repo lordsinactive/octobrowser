@@ -35,7 +35,7 @@ class ExtensionOut(OctoModel):
 class ExtensionsListResponse(OctoModel):
     success: bool = True
     msg: str = ""
-    code: str = ""
+    code: Optional[str] = None
     data: List[ExtensionOut] = Field(default_factory=list)
 
 
@@ -104,6 +104,7 @@ class SubaccountsResponse(OctoModel):
     msg: str = ""
     total_count: int = 0
     data: List[SubaccountOut] = Field(default_factory=list)
+    code: Optional[str] = None
 
 
 class CreateSubaccountRequest(OctoModel):
@@ -130,6 +131,7 @@ class InvitesResponse(OctoModel):
     msg: str = ""
     total_count: int = 0
     data: List[InviteOut] = Field(default_factory=list)
+    code: Optional[str] = None
 
 
 class DeleteInviteRequest(OctoModel):

@@ -25,6 +25,7 @@ class OSTypeIn(StrEnum):
 class PlatformsBaseSpec(StrEnum):
     WIN = "win"
     MAC = "mac"
+    LIN = "lin"
 
 
 class DeviceType(StrEnum):

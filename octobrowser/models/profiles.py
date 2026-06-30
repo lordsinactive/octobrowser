@@ -2,6 +2,7 @@ from __future__ import annotations
 from typing import Any, Dict, List, Optional, Union
 
 from pydantic import Field
+from ..enums import ProxyType
 from ._base import OctoModel
 from .fingerprint import FingerprintDataInBaseSpec, FingerprintUpdateIn
 from .proxies import ProxyDataInExtraIgnore, ProxyUUID
@@ -10,12 +11,16 @@ __all__ = [
     "Bookmark",
     "StorageOptions",
     "CookiesRequest",
+    "ProfileProxyOut",
+    "ProfileOut",
     "ProfileCreateRequestAutomation",
     "ProfileUpdateRequest",
     "ProfilesResp",
+    "ProfileResp",
     "ProfileCreatedResp",
     "DeleteProfileRequest",
     "ProfileForceStopRequest",
+    "MassForceStopRequest",
     "SetProfilePasswordRequestAutomation",
     "ClearProfilePasswordRequestAutomation",
     "TransferProfilesRequest",
@@ -44,7 +49,7 @@ class StorageOptions(OctoModel):
 
 
 class CookiesRequest(OctoModel):
-    cookies: List[Dict[str, Any]]
+    cookies: List[Union[Dict[str, Any], str]]
 
 
 class ProfileCreateRequestAutomation(OctoModel):
@@ -58,7 +63,7 @@ class ProfileCreateRequestAutomation(OctoModel):
     password: Optional[str] = None
     proxy: Optional[Union[ProxyDataInExtraIgnore, ProxyUUID, Dict[str, Any]]] = None
     storage_options: Optional[Union[StorageOptions, Dict[str, Any]]] = None
-    cookies: Optional[List[Dict[str, Any]]] = None
+    cookies: Optional[List[Union[Dict[str, Any], str]]] = None
     image: Optional[str] = None
     extensions: Optional[List[str]] = None
     launch_args: Optional[List[str]] = None
@@ -75,7 +80,7 @@ class ProfileUpdateRequest(OctoModel):
     bookmarks: Optional[List[Union[Bookmark, Dict[str, Any]]]] = None
     proxy: Optional[Union[ProxyDataInExtraIgnore, ProxyUUID, Dict[str, Any]]] = None
     storage_options: Optional[Union[StorageOptions, Dict[str, Any]]] = None
-    cookies: Optional[List[Dict[str, Any]]] = None
+    cookies: Optional[List[Union[Dict[str, Any], str]]] = None
     image: Optional[str] = None
     fingerprint: Optional[Union[FingerprintUpdateIn, Dict[str, Any]]] = None
     extensions: Optional[List[str]] = None
@@ -84,20 +89,65 @@ class ProfileUpdateRequest(OctoModel):
     local_cache: Optional[bool] = None
 
 
+class ProfileProxyOut(OctoModel):
+    uuid: Optional[str] = None
+    type: Optional[ProxyType] = None
+    host: Optional[str] = None
+    port: Optional[int] = None
+    login: Optional[str] = None
+    password: Optional[str] = None
+    change_ip_url: Optional[str] = None
+    external_id: Optional[str] = None
+
+
+class ProfileOut(OctoModel):
+    uuid: str
+    title: Optional[str] = None
+    description: Optional[str] = None
+    start_pages: Optional[List[str]] = None
+    tags: Optional[List[str]] = None
+    folder: Optional[str] = None
+    pinned_tag: Optional[str] = None
+    has_user_password: Optional[bool] = None
+    password_set_at: Optional[str] = None
+    proxy: Optional[ProfileProxyOut] = None
+    status: Optional[int] = None
+    version: Optional[str] = None
+    storage_options: Optional[StorageOptions] = None
+    fingerprint: Optional[Dict[str, Any]] = None
+    bookmarks: Optional[List[Dict[str, Any]]] = None
+    extensions: Optional[List[Any]] = None
+    image: Optional[str] = None
+    launch_args: Optional[List[str]] = None
+    images_load_limit: Optional[int] = None
+    local_cache: Optional[bool] = None
+    last_active: Optional[str] = None
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
+    extra_info: Any = None
+
+
 class ProfilesResp(OctoModel):
     success: bool = True
     msg: str = ""
-    data: List[Dict[str, Any]] = Field(default_factory=list)
+    data: List[ProfileOut] = Field(default_factory=list)
     total_count: int = 0
     page: int = 0
-    code: str = ""
+    code: Optional[str] = None
+
+
+class ProfileResp(OctoModel):
+    success: bool = True
+    msg: str = ""
+    data: Optional[ProfileOut] = None
+    code: Optional[str] = None
 
 
 class ProfileCreatedResp(OctoModel):
     success: bool = True
     msg: str = ""
-    data: Dict[str, Any] = Field(default_factory=dict)
-    code: str = ""
+    data: Optional[ProfileOut] = None
+    code: Optional[str] = None
 
 
 class DeleteProfileRequest(OctoModel):
@@ -106,7 +156,11 @@ class DeleteProfileRequest(OctoModel):
 
 
 class ProfileForceStopRequest(OctoModel):
-    version: int
+    version: int = Field(gt=0)
+
+
+class MassForceStopRequest(OctoModel):
+    uuids: List[str]
 
 
 class SetProfilePasswordRequestAutomation(OctoModel):

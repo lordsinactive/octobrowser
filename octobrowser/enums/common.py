@@ -14,6 +14,7 @@ class AllowedPageLen(IntEnum):
 class ErrorCode(StrEnum):
     UNKNOWN_ERROR = "unknown_error"
     INTERNAL_ERROR = "internal_error"
+    API_TOKEN = "api_token"
     NO_PERMISSION = "no_permission"
     NO_TOKENS = "no_tokens"
     LIMIT_REACHED = "limit_reached"

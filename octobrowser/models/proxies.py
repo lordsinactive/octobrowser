@@ -67,12 +67,12 @@ class PermanentProxyOut(OctoModel):
 class ProxyResponse(OctoModel):
     success: bool = True
     msg: str = ""
-    code: str = ""
+    code: Optional[str] = None
     data: Optional[PermanentProxyOut] = None
 
 
 class ProxiesResponse(OctoModel):
     success: bool = True
     msg: str = ""
-    code: str = ""
+    code: Optional[str] = None
     data: List[PermanentProxyOut] = Field(default_factory=list)
