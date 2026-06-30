@@ -30,6 +30,14 @@ __all__ = [
     "ImportFileV1",
     "ImportFileV2",
     "ImportProfilesRequest",
+    "ExportedProfile",
+    "ExportResult",
+    "ExportProfilesResp",
+    "ExportListData",
+    "ExportListResp",
+    "ExportProfileResp",
+    "ImportResult",
+    "ImportProfilesResp",
 ]
 
 
@@ -208,3 +216,53 @@ class ImportFileV2(OctoModel):
 
 class ImportProfilesRequest(OctoModel):
     data: List[Union[str, ImportFileV2, ImportFileV1, Dict[str, Any]]]
+
+
+class ExportedProfile(OctoModel):
+    uuid: str
+    title: Optional[str] = None
+    data: str
+
+
+class ExportResult(OctoModel):
+    exported: List[ExportedProfile] = Field(default_factory=list)
+    failed: List[str] = Field(default_factory=list)
+
+
+class ExportProfilesResp(OctoModel):
+    success: bool = True
+    msg: str = ""
+    data: Optional[ExportResult] = None
+    code: Optional[str] = None
+
+
+class ExportListData(OctoModel):
+    data: List[ExportedProfile] = Field(default_factory=list)
+    total: int = 0
+    page: int = 0
+
+
+class ExportListResp(OctoModel):
+    success: bool = True
+    msg: str = ""
+    data: Optional[ExportListData] = None
+    code: Optional[str] = None
+
+
+class ExportProfileResp(OctoModel):
+    success: bool = True
+    msg: str = ""
+    data: Optional[ExportedProfile] = None
+    code: Optional[str] = None
+
+
+class ImportResult(OctoModel):
+    failed: List[str] = Field(default_factory=list)
+    imported: Optional[List[str]] = None
+
+
+class ImportProfilesResp(OctoModel):
+    success: bool = True
+    msg: str = ""
+    data: Optional[ImportResult] = None
+    code: Optional[str] = None
