@@ -76,7 +76,11 @@ class Transport:
             except RateLimitError as exc:
                 if not self._wait_on_rate_limit:
                     raise
-                wait = exc.retry_after if exc.retry_after is not None else DEFAULT_RETRY_BACKOFF
+                wait = (
+                    exc.retry_after
+                    if exc.retry_after is not None
+                    else DEFAULT_RETRY_BACKOFF
+                )
                 time.sleep(wait)
                 continue
             if out is None:
@@ -103,7 +107,9 @@ class AsyncTransport:
         wait_on_rate_limit: bool = False,
     ) -> None:
         headers = {'X-Octo-Api-Token': token} if token else {}
-        self._client = httpx.AsyncClient(base_url=base_url, headers=headers, timeout=timeout)
+        self._client = httpx.AsyncClient(
+            base_url=base_url, headers=headers, timeout=timeout
+        )
         self._wait_on_rate_limit = wait_on_rate_limit
 
     @overload
@@ -142,13 +148,19 @@ class AsyncTransport:
     ) -> Any:
         payload = _serialize(body) if body is not None else json
         while True:
-            response = await self._client.request(method, path, params=params, json=payload)
+            response = await self._client.request(
+                method, path, params=params, json=payload
+            )
             try:
                 raise_for_response(response)
             except RateLimitError as exc:
                 if not self._wait_on_rate_limit:
                     raise
-                wait = exc.retry_after if exc.retry_after is not None else DEFAULT_RETRY_BACKOFF
+                wait = (
+                    exc.retry_after
+                    if exc.retry_after is not None
+                    else DEFAULT_RETRY_BACKOFF
+                )
                 await asyncio.sleep(wait)
                 continue
             if out is None:
