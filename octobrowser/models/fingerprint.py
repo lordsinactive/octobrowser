@@ -3,148 +3,122 @@ from typing import Any, Dict, List, Optional, Union
 
 from pydantic import Field
 from ..enums import (
-    CPUVariant,
+    OS,
+    Arch,
+    CPUCores,
     DeviceType,
-    IPBasedNoManualType,
-    IPBasedType,
-    MacOSArchType,
-    OSTypeIn,
-    PlatformsBaseSpec,
-    RAMVariant,
+    IPMode,
+    Platform,
+    RAMSize,
+    WebRTCMode,
 )
 from ._base import OctoModel
 
 __all__ = [
-    "GeoData",
-    "GeolocationIn",
-    "LanguagesIn",
-    "TimezoneIn",
-    "WebRTCIn",
-    "NoiseType",
-    "MediaDevicesType",
-    "FingerprintDataInBaseSpec",
-    "FingerprintUpdateIn",
-    "FingerprintDataOutBaseSpec",
-    "DeviceModelOut",
-    "RenderersRespBaseSpec",
-    "ScreensRespBaseSpec",
-    "DeviceModelsResponse",
+    'GeoCoordinates',
+    'Geolocation',
+    'Languages',
+    'Timezone',
+    'WebRTC',
+    'Noise',
+    'MediaDevices',
+    'Fingerprint',
+    'FingerprintUpdate',
+    'FingerprintOption',
+    'DeviceModel',
 ]
 
 
-class GeoData(OctoModel):
+class GeoCoordinates(OctoModel):
     latitude: float
     longitude: float
-    accuracy: int
+    accuracy: int = Field(ge=0)
 
 
-class GeolocationIn(OctoModel):
-    type: IPBasedType
-    data: Optional[Union[GeoData, Dict[str, Any]]] = None
+class Geolocation(OctoModel):
+    type: IPMode
+    data: Optional[Union[GeoCoordinates, Dict[str, Any]]] = None
 
 
-class LanguagesIn(OctoModel):
-    type: IPBasedType
+class Languages(OctoModel):
+    type: IPMode
     data: Optional[List[str]] = None
 
 
-class TimezoneIn(OctoModel):
-    type: IPBasedType
+class Timezone(OctoModel):
+    type: IPMode
     data: Optional[str] = None
 
 
-class WebRTCIn(OctoModel):
-    type: IPBasedNoManualType
+class WebRTC(OctoModel):
+    type: WebRTCMode
     data: Optional[str] = None
 
 
-class NoiseType(OctoModel):
+class Noise(OctoModel):
     webgl: bool = False
     canvas: bool = False
     audio: bool = False
     client_rects: bool = False
 
 
-class MediaDevicesType(OctoModel):
+class MediaDevices(OctoModel):
     video_in: int
     audio_in: int
     audio_out: int
 
 
-class FingerprintDataInBaseSpec(OctoModel):
-    os: OSTypeIn
+class Fingerprint(OctoModel):
+    os: OS
     os_version: Optional[str] = None
     os_arch: Optional[str] = None
     user_agent: Optional[str] = None
     screen: Optional[str] = None
     renderer: Optional[str] = None
-    languages: Optional[Union[LanguagesIn, Dict[str, Any]]] = None
-    timezone: Optional[Union[TimezoneIn, Dict[str, Any]]] = None
-    geolocation: Optional[Union[GeolocationIn, Dict[str, Any]]] = None
-    cpu: Optional[CPUVariant] = None
-    ram: Optional[RAMVariant] = None
-    noise: Optional[Union[NoiseType, Dict[str, Any]]] = None
-    webrtc: Optional[Union[WebRTCIn, Dict[str, Any]]] = None
+    languages: Optional[Union[Languages, Dict[str, Any]]] = None
+    timezone: Optional[Union[Timezone, Dict[str, Any]]] = None
+    geolocation: Optional[Union[Geolocation, Dict[str, Any]]] = None
+    cpu: Optional[CPUCores] = None
+    ram: Optional[RAMSize] = None
+    noise: Optional[Union[Noise, Dict[str, Any]]] = None
+    webrtc: Optional[Union[WebRTC, Dict[str, Any]]] = None
     dns: Optional[str] = None
     fonts: Optional[List[str]] = None
-    media_devices: Optional[Union[MediaDevicesType, Dict[str, Any]]] = None
+    media_devices: Optional[Union[MediaDevices, Dict[str, Any]]] = None
     device_model: Optional[str] = None
     device_type: Optional[DeviceType] = None
 
 
-class FingerprintUpdateIn(OctoModel):
-    os: Optional[OSTypeIn] = None
+class FingerprintUpdate(OctoModel):
+    os: Optional[OS] = None
     os_version: Optional[str] = None
     os_arch: Optional[str] = None
     user_agent: Optional[str] = None
     screen: Optional[str] = None
     renderer: Optional[str] = None
-    languages: Optional[Union[LanguagesIn, Dict[str, Any]]] = None
-    timezone: Optional[Union[TimezoneIn, Dict[str, Any]]] = None
-    geolocation: Optional[Union[GeolocationIn, Dict[str, Any]]] = None
-    cpu: Optional[CPUVariant] = None
-    ram: Optional[RAMVariant] = None
-    noise: Optional[Union[NoiseType, Dict[str, Any]]] = None
-    webrtc: Optional[Union[WebRTCIn, Dict[str, Any]]] = None
+    languages: Optional[Union[Languages, Dict[str, Any]]] = None
+    timezone: Optional[Union[Timezone, Dict[str, Any]]] = None
+    geolocation: Optional[Union[Geolocation, Dict[str, Any]]] = None
+    cpu: Optional[CPUCores] = None
+    ram: Optional[RAMSize] = None
+    noise: Optional[Union[Noise, Dict[str, Any]]] = None
+    webrtc: Optional[Union[WebRTC, Dict[str, Any]]] = None
     dns: Optional[str] = None
     fonts: Optional[List[str]] = None
-    media_devices: Optional[Union[MediaDevicesType, Dict[str, Any]]] = None
+    media_devices: Optional[Union[MediaDevices, Dict[str, Any]]] = None
     device_model: Optional[str] = None
     device_type: Optional[DeviceType] = None
 
 
-class FingerprintDataOutBaseSpec(OctoModel):
+class FingerprintOption(OctoModel):
     value: str
-    platform: PlatformsBaseSpec
-    archs: List[MacOSArchType]
+    platform: Platform
+    archs: List[Arch]
 
 
-class DeviceModelOut(OctoModel):
+class DeviceModel(OctoModel):
     value: str
-    os: OSTypeIn
+    os: OS
     os_versions: List[str] = Field(default_factory=list)
-    archs: List[MacOSArchType] = Field(default_factory=list)
+    archs: List[Arch] = Field(default_factory=list)
     device_type: Optional[DeviceType] = None
-
-
-class RenderersRespBaseSpec(OctoModel):
-    success: bool = True
-    msg: str = ""
-    data: List[FingerprintDataOutBaseSpec] = Field(default_factory=list)
-    total_count: int = 0
-    page: int = 0
-    code: Optional[str] = None
-
-
-class ScreensRespBaseSpec(OctoModel):
-    success: bool = True
-    msg: str = ""
-    data: List[FingerprintDataOutBaseSpec] = Field(default_factory=list)
-    code: Optional[str] = None
-
-
-class DeviceModelsResponse(OctoModel):
-    success: bool = True
-    msg: str = ""
-    data: List[DeviceModelOut] = Field(default_factory=list)
-    code: Optional[str] = None

@@ -1,49 +1,42 @@
 from __future__ import annotations
 from typing import Any, Dict, List, Optional, Union
 
-from pydantic import Field
+from pydantic import Field, HttpUrl
 from ..enums import ProxyType
 from ._base import OctoModel
-from .fingerprint import FingerprintDataInBaseSpec, FingerprintUpdateIn
-from .proxies import ProxyDataInExtraIgnore, ProxyUUID
+from .fingerprint import Fingerprint, FingerprintUpdate
+from .proxies import ProxyData, ProxyRef
 
 __all__ = [
-    "Bookmark",
-    "StorageOptions",
-    "CookiesRequest",
-    "ProfileProxyOut",
-    "ProfileOut",
-    "ProfileCreateRequestAutomation",
-    "ProfileUpdateRequest",
-    "ProfilesResp",
-    "ProfileResp",
-    "ProfileCreatedResp",
-    "DeleteProfileRequest",
-    "ProfileForceStopRequest",
-    "MassForceStopRequest",
-    "SetProfilePasswordRequestAutomation",
-    "ClearProfilePasswordRequestAutomation",
-    "TransferProfilesRequest",
-    "ExportProfilesData",
-    "ImportDataV1",
-    "ImportDataV2",
-    "ImportFileV1",
-    "ImportFileV2",
-    "ImportProfilesRequest",
-    "ExportedProfile",
-    "ExportResult",
-    "ExportProfilesResp",
-    "ExportListData",
-    "ExportListResp",
-    "ExportProfileResp",
-    "ImportResult",
-    "ImportProfilesResp",
+    'Bookmark',
+    'StorageOptions',
+    'Cookies',
+    'ProfileProxy',
+    'Profile',
+    'ProfileCreate',
+    'ProfileUpdate',
+    'ProfileDelete',
+    'ProfileForceStop',
+    'ProfilesForceStop',
+    'SetProfilePassword',
+    'ClearProfilePassword',
+    'TransferProfiles',
+    'ExportProfiles',
+    'ImportDataV1',
+    'ImportDataV2',
+    'ImportFileV1',
+    'ImportFileV2',
+    'ImportProfiles',
+    'ExportedProfile',
+    'ExportResult',
+    'ExportList',
+    'ImportResult',
 ]
 
 
 class Bookmark(OctoModel):
     name: str
-    url: str
+    url: HttpUrl
 
 
 class StorageOptions(OctoModel):
@@ -56,48 +49,48 @@ class StorageOptions(OctoModel):
     serviceworkers: bool = False
 
 
-class CookiesRequest(OctoModel):
+class Cookies(OctoModel):
     cookies: List[Union[Dict[str, Any], str]]
 
 
-class ProfileCreateRequestAutomation(OctoModel):
+class ProfileCreate(OctoModel):
     title: str
-    fingerprint: Union[FingerprintDataInBaseSpec, Dict[str, Any]]
+    fingerprint: Union[Fingerprint, Dict[str, Any]]
     description: Optional[str] = None
     start_pages: Optional[List[str]] = None
     bookmarks: Optional[List[Union[Bookmark, Dict[str, Any]]]] = None
     tags: Optional[List[str]] = None
     pinned_tag: Optional[str] = None
     password: Optional[str] = None
-    proxy: Optional[Union[ProxyDataInExtraIgnore, ProxyUUID, Dict[str, Any]]] = None
+    proxy: Optional[Union[ProxyData, ProxyRef, Dict[str, Any]]] = None
     storage_options: Optional[Union[StorageOptions, Dict[str, Any]]] = None
     cookies: Optional[List[Union[Dict[str, Any], str]]] = None
     image: Optional[str] = None
     extensions: Optional[List[str]] = None
     launch_args: Optional[List[str]] = None
-    images_load_limit: Optional[int] = None
+    images_load_limit: Optional[int] = Field(default=None, ge=0)
     local_cache: Optional[bool] = None
 
 
-class ProfileUpdateRequest(OctoModel):
+class ProfileUpdate(OctoModel):
     title: Optional[str] = None
     description: Optional[str] = None
     start_pages: Optional[List[str]] = None
     tags: Optional[List[str]] = None
     pinned_tag: Optional[str] = None
     bookmarks: Optional[List[Union[Bookmark, Dict[str, Any]]]] = None
-    proxy: Optional[Union[ProxyDataInExtraIgnore, ProxyUUID, Dict[str, Any]]] = None
+    proxy: Optional[Union[ProxyData, ProxyRef, Dict[str, Any]]] = None
     storage_options: Optional[Union[StorageOptions, Dict[str, Any]]] = None
     cookies: Optional[List[Union[Dict[str, Any], str]]] = None
     image: Optional[str] = None
-    fingerprint: Optional[Union[FingerprintUpdateIn, Dict[str, Any]]] = None
+    fingerprint: Optional[Union[FingerprintUpdate, Dict[str, Any]]] = None
     extensions: Optional[List[str]] = None
     launch_args: Optional[List[str]] = None
-    images_load_limit: Optional[int] = None
+    images_load_limit: Optional[int] = Field(default=None, ge=0)
     local_cache: Optional[bool] = None
 
 
-class ProfileProxyOut(OctoModel):
+class ProfileProxy(OctoModel):
     uuid: Optional[str] = None
     type: Optional[ProxyType] = None
     host: Optional[str] = None
@@ -108,7 +101,7 @@ class ProfileProxyOut(OctoModel):
     external_id: Optional[str] = None
 
 
-class ProfileOut(OctoModel):
+class Profile(OctoModel):
     uuid: str
     title: Optional[str] = None
     description: Optional[str] = None
@@ -118,7 +111,7 @@ class ProfileOut(OctoModel):
     pinned_tag: Optional[str] = None
     has_user_password: Optional[bool] = None
     password_set_at: Optional[str] = None
-    proxy: Optional[ProfileProxyOut] = None
+    proxy: Optional[ProfileProxy] = None
     status: Optional[int] = None
     version: Optional[str] = None
     storage_options: Optional[StorageOptions] = None
@@ -135,59 +128,36 @@ class ProfileOut(OctoModel):
     extra_info: Any = None
 
 
-class ProfilesResp(OctoModel):
-    success: bool = True
-    msg: str = ""
-    data: List[ProfileOut] = Field(default_factory=list)
-    total_count: int = 0
-    page: int = 0
-    code: Optional[str] = None
-
-
-class ProfileResp(OctoModel):
-    success: bool = True
-    msg: str = ""
-    data: Optional[ProfileOut] = None
-    code: Optional[str] = None
-
-
-class ProfileCreatedResp(OctoModel):
-    success: bool = True
-    msg: str = ""
-    data: Optional[ProfileOut] = None
-    code: Optional[str] = None
-
-
-class DeleteProfileRequest(OctoModel):
+class ProfileDelete(OctoModel):
     uuids: List[str]
     skip_trash_bin: bool = True
 
 
-class ProfileForceStopRequest(OctoModel):
+class ProfileForceStop(OctoModel):
     version: int = Field(gt=0)
 
 
-class MassForceStopRequest(OctoModel):
+class ProfilesForceStop(OctoModel):
     uuids: List[str]
 
 
-class SetProfilePasswordRequestAutomation(OctoModel):
+class SetProfilePassword(OctoModel):
     profiles: List[str]
     password: str
     old_password: Optional[str] = None
 
 
-class ClearProfilePasswordRequestAutomation(OctoModel):
+class ClearProfilePassword(OctoModel):
     password: str
 
 
-class TransferProfilesRequest(OctoModel):
+class TransferProfiles(OctoModel):
     uuids: List[str]
     receiver_email: str
     transfer_proxy: bool
 
 
-class ExportProfilesData(OctoModel):
+class ExportProfiles(OctoModel):
     uuids: List[str]
     export_proxy: bool
     app_version: Optional[str] = None
@@ -214,7 +184,7 @@ class ImportFileV2(OctoModel):
     title: Optional[str] = None
 
 
-class ImportProfilesRequest(OctoModel):
+class ImportProfiles(OctoModel):
     data: List[Union[str, ImportFileV2, ImportFileV1, Dict[str, Any]]]
 
 
@@ -229,40 +199,12 @@ class ExportResult(OctoModel):
     failed: List[str] = Field(default_factory=list)
 
 
-class ExportProfilesResp(OctoModel):
-    success: bool = True
-    msg: str = ""
-    data: Optional[ExportResult] = None
-    code: Optional[str] = None
-
-
-class ExportListData(OctoModel):
+class ExportList(OctoModel):
     data: List[ExportedProfile] = Field(default_factory=list)
     total: int = 0
     page: int = 0
 
 
-class ExportListResp(OctoModel):
-    success: bool = True
-    msg: str = ""
-    data: Optional[ExportListData] = None
-    code: Optional[str] = None
-
-
-class ExportProfileResp(OctoModel):
-    success: bool = True
-    msg: str = ""
-    data: Optional[ExportedProfile] = None
-    code: Optional[str] = None
-
-
 class ImportResult(OctoModel):
     failed: List[str] = Field(default_factory=list)
     imported: Optional[List[str]] = None
-
-
-class ImportProfilesResp(OctoModel):
-    success: bool = True
-    msg: str = ""
-    data: Optional[ImportResult] = None
-    code: Optional[str] = None

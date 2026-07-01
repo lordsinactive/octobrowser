@@ -5,67 +5,66 @@ from pydantic import Field, RootModel
 from ._base import OctoModel
 
 __all__ = [
-    "StartRequest",
-    "StartOneTimeProfileIn",
-    "StopRequest",
-    "ForceStopRequest",
-    "LoginIn",
-    "SetPasswordIn",
-    "ClearPasswordIn",
-    "BrowserJson",
-    "OkOut",
-    "ErrorOut",
-    "UpdatesJson",
-    "UsernameOut",
-    "StartProfileOut",
-    "ResponseOut",
-    "ActiveProfilesOut",
-    "GetUpdatesOut",
+    'StartProfile',
+    'StartOneTimeProfile',
+    'StopProfile',
+    'ForceStopProfile',
+    'Login',
+    'SetPassword',
+    'ClearPassword',
+    'Browser',
+    'Ok',
+    'Error',
+    'UpdateInfo',
+    'Username',
+    'StartProfileResult',
+    'LocalResult',
+    'ActiveProfiles',
 ]
 
 
-class StartRequest(OctoModel):
+class StartProfile(OctoModel):
     uuid: str
     headless: bool = False
     debug_port: Union[int, bool] = False
     flags: List[str] = Field(default_factory=list)
     only_local: bool = True
-    timeout: int = 60
+    timeout: int = Field(default=60, ge=0)
     password: Optional[str] = None
 
 
-class StartOneTimeProfileIn(OctoModel):
+class StartOneTimeProfile(OctoModel):
     profile_data: Dict[str, Any]
     headless: bool = True
     debug_port: bool = True
     flags: List[str] = Field(default_factory=list)
-    timeout: int = 60
+    timeout: int = Field(default=60, ge=0)
 
 
-class StopRequest(OctoModel):
+class StopProfile(OctoModel):
     uuid: str
 
 
-class ForceStopRequest(OctoModel):
+class ForceStopProfile(OctoModel):
     uuid: str
 
 
-class LoginIn(OctoModel):
+class Login(OctoModel):
     email: str
     password: str
 
 
-class SetPasswordIn(OctoModel):
+class SetPassword(OctoModel):
     uuid: str
     password: str
 
 
-class ClearPasswordIn(OctoModel):
+class ClearPassword(OctoModel):
     uuid: str
     password: str
 
 
-class BrowserJson(OctoModel):
+class Browser(OctoModel):
     uuid: str
     state: str
     headless: Optional[bool] = None
@@ -77,37 +76,34 @@ class BrowserJson(OctoModel):
     connection_data: Optional[Dict[str, Any]] = None
 
 
-class OkOut(OctoModel):
+class Ok(OctoModel):
     msg: str
     data: Any = None
 
 
-class ErrorOut(OctoModel):
+class Error(OctoModel):
     code: Optional[str] = None
     error: str
     error_code: int = -1
 
 
-class UpdatesJson(OctoModel):
+class UpdateInfo(OctoModel):
     current: str
     latest: str
     update_required: bool
 
 
-class UsernameOut(OctoModel):
+class Username(OctoModel):
     username: str
 
 
-class StartProfileOut(RootModel[Union[BrowserJson, ErrorOut]]):
+class StartProfileResult(RootModel[Union[Browser, Error]]):
     pass
 
 
-class ResponseOut(RootModel[Union[OkOut, ErrorOut]]):
+class LocalResult(RootModel[Union[Ok, Error]]):
     pass
 
 
-class ActiveProfilesOut(RootModel[List[BrowserJson]]):
+class ActiveProfiles(RootModel[List[Browser]]):
     pass
-
-
-GetUpdatesOut = UpdatesJson

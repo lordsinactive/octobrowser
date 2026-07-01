@@ -1,36 +1,36 @@
 from __future__ import annotations
 
-from .common import AllowedPageLen, ErrorCode
+from .common import ErrorCode, PageSize
 from .fingerprint import (
+    OS,
     AndroidVersion,
-    CPUVariant,
+    Arch,
+    CPUCores,
     DeviceType,
-    IPBasedNoManualType,
-    IPBasedType,
-    MacOSArchType,
+    IPMode,
     MacOSVersion,
-    OSTypeIn,
-    PlatformsBaseSpec,
-    RAMVariant,
+    Platform,
+    RAMSize,
+    WebRTCMode,
     WindowsVersion,
 )
 from .profiles import ProfileField
 from .proxy import ProxyType
 
 __all__ = [
-    "AllowedPageLen",
-    "ErrorCode",
-    "OSTypeIn",
-    "PlatformsBaseSpec",
-    "DeviceType",
-    "MacOSArchType",
-    "IPBasedType",
-    "IPBasedNoManualType",
-    "CPUVariant",
-    "RAMVariant",
-    "WindowsVersion",
-    "MacOSVersion",
-    "AndroidVersion",
-    "ProfileField",
-    "ProxyType",
+    'PageSize',
+    'ErrorCode',
+    'OS',
+    'Platform',
+    'DeviceType',
+    'Arch',
+    'IPMode',
+    'WebRTCMode',
+    'CPUCores',
+    'RAMSize',
+    'WindowsVersion',
+    'MacOSVersion',
+    'AndroidVersion',
+    'ProfileField',
+    'ProxyType',
 ]

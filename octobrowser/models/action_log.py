@@ -5,9 +5,9 @@ from pydantic import Field
 from ._base import OctoModel
 
 __all__ = [
-    "ActionLogEntry",
-    "ActionLogWatermark",
-    "ActionLogStreamPage",
+    'ActionLogEntry',
+    'ActionLogWatermark',
+    'ActionLogPage',
 ]
 
 
@@ -26,6 +26,6 @@ class ActionLogWatermark(OctoModel):
     time: int
 
 
-class ActionLogStreamPage(OctoModel):
+class ActionLogPage(OctoModel):
     items: List[ActionLogEntry] = Field(default_factory=list)
     watermark: Optional[ActionLogWatermark] = None

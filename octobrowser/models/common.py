@@ -6,26 +6,18 @@ from ..enums import ErrorCode
 from ._base import OctoModel
 
 __all__ = [
-    "DefaultResp",
-    "BaseErrorResponse",
-    "ValidationError",
-    "HTTPValidationError",
-    "ValidationErrorItem",
-    "CloudValidationError",
+    'ErrorResponse',
+    'ValidationError',
+    'HTTPValidationError',
+    'ValidationErrorItem',
+    'CloudValidationError',
 ]
 
 
-class DefaultResp(OctoModel):
-    success: bool = True
-    msg: str = ""
-    code: Optional[str] = None
-    data: Optional[Union[str, List[Any], Dict[str, Any]]] = None
-
-
-class BaseErrorResponse(OctoModel):
+class ErrorResponse(OctoModel):
     success: bool = False
-    msg: str = "Error detail"
-    code: Union[ErrorCode, str] = Field(union_mode="left_to_right")
+    msg: str = 'Error detail'
+    code: Union[ErrorCode, str] = Field(union_mode='left_to_right')
     data: Optional[Union[str, List[Any], Dict[str, Any]]] = None
 
 

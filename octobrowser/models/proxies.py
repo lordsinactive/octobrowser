@@ -1,38 +1,36 @@
 from __future__ import annotations
-from typing import List, Optional
+from typing import Optional
 
 from pydantic import Field
 from ..enums import ProxyType
 from ._base import OctoModel
 
 __all__ = [
-    "ProxyUUID",
-    "ProxyDataInExtraIgnore",
-    "ProxyCreateRequest",
-    "ProxyUpdate",
-    "PermanentProxyOut",
-    "ProxyResponse",
-    "ProxiesResponse",
+    'ProxyRef',
+    'ProxyData',
+    'ProxyCreate',
+    'ProxyUpdate',
+    'Proxy',
 ]
 
 
-class ProxyUUID(OctoModel):
+class ProxyRef(OctoModel):
     uuid: str
 
 
-class ProxyDataInExtraIgnore(OctoModel):
+class ProxyData(OctoModel):
     type: ProxyType
     host: str
-    port: int
+    port: int = Field(ge=1, le=65535)
     login: Optional[str] = None
     password: Optional[str] = None
     change_ip_url: Optional[str] = None
 
 
-class ProxyCreateRequest(OctoModel):
+class ProxyCreate(OctoModel):
     type: ProxyType
     host: str
-    port: int
+    port: int = Field(ge=1, le=65535)
     title: str
     login: Optional[str] = None
     password: Optional[str] = None
@@ -43,7 +41,7 @@ class ProxyCreateRequest(OctoModel):
 class ProxyUpdate(OctoModel):
     type: Optional[ProxyType] = None
     host: Optional[str] = None
-    port: Optional[int] = None
+    port: Optional[int] = Field(default=None, ge=1, le=65535)
     login: Optional[str] = None
     password: Optional[str] = None
     change_ip_url: Optional[str] = None
@@ -51,28 +49,14 @@ class ProxyUpdate(OctoModel):
     external_id: Optional[str] = None
 
 
-class PermanentProxyOut(OctoModel):
+class Proxy(OctoModel):
     uuid: str
     type: ProxyType
     host: str
     port: int
-    profiles_count: int
+    profiles_count: Optional[int] = None
     login: Optional[str] = None
     password: Optional[str] = None
     change_ip_url: Optional[str] = None
     external_id: Optional[str] = None
     title: Optional[str] = None
-
-
-class ProxyResponse(OctoModel):
-    success: bool = True
-    msg: str = ""
-    code: Optional[str] = None
-    data: Optional[PermanentProxyOut] = None
-
-
-class ProxiesResponse(OctoModel):
-    success: bool = True
-    msg: str = ""
-    code: Optional[str] = None
-    data: List[PermanentProxyOut] = Field(default_factory=list)

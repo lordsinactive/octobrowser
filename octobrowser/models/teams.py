@@ -1,45 +1,34 @@
 from __future__ import annotations
 from typing import Any, Dict, List, Optional, Union
 
-from pydantic import Field
 from ._base import OctoModel
 
 __all__ = [
-    "ExtensionOut",
-    "ExtensionsListResponse",
-    "DeleteExtensionsRequest",
-    "ProxyPermissions",
-    "PaidProxyPermissions",
-    "ProfilePermissions",
-    "TemplatePermissions",
-    "ExtensionPermissions",
-    "TaskPermissions",
-    "SubaccountPermissions",
-    "SubaccountOut",
-    "SubaccountsResponse",
-    "CreateSubaccountRequest",
-    "UpdateSubaccountRequest",
-    "DeleteSubaccountRequest",
-    "InviteOut",
-    "InvitesResponse",
-    "DeleteInviteRequest",
+    'Extension',
+    'ExtensionsDelete',
+    'ProxyPermissions',
+    'PaidProxyPermissions',
+    'ProfilePermissions',
+    'TemplatePermissions',
+    'ExtensionPermissions',
+    'TaskPermissions',
+    'SubaccountPermissions',
+    'Subaccount',
+    'SubaccountCreate',
+    'SubaccountUpdate',
+    'SubaccountDelete',
+    'Invite',
+    'InviteDelete',
 ]
 
 
-class ExtensionOut(OctoModel):
+class Extension(OctoModel):
     uuid: str
     name: str
     version: str
 
 
-class ExtensionsListResponse(OctoModel):
-    success: bool = True
-    msg: str = ""
-    code: Optional[str] = None
-    data: List[ExtensionOut] = Field(default_factory=list)
-
-
-class DeleteExtensionsRequest(OctoModel):
+class ExtensionsDelete(OctoModel):
     uuids: List[str]
 
 
@@ -91,7 +80,7 @@ class SubaccountPermissions(OctoModel):
     visible_tags: Optional[List[str]] = None
 
 
-class SubaccountOut(OctoModel):
+class Subaccount(OctoModel):
     uuid: str
     email: str
     master: bool = False
@@ -99,40 +88,24 @@ class SubaccountOut(OctoModel):
     permissions: Optional[SubaccountPermissions] = None
 
 
-class SubaccountsResponse(OctoModel):
-    success: bool = True
-    msg: str = ""
-    total_count: int = 0
-    data: List[SubaccountOut] = Field(default_factory=list)
-    code: Optional[str] = None
-
-
-class CreateSubaccountRequest(OctoModel):
+class SubaccountCreate(OctoModel):
     email: str
     permissions: Optional[Union[SubaccountPermissions, Dict[str, Any]]] = None
 
 
-class UpdateSubaccountRequest(OctoModel):
+class SubaccountUpdate(OctoModel):
     email: str
     permissions: Optional[Union[SubaccountPermissions, Dict[str, Any]]] = None
 
 
-class DeleteSubaccountRequest(OctoModel):
+class SubaccountDelete(OctoModel):
     email: str
 
 
-class InviteOut(OctoModel):
+class Invite(OctoModel):
     receiver: str
     created_at: Optional[str] = None
 
 
-class InvitesResponse(OctoModel):
-    success: bool = True
-    msg: str = ""
-    total_count: int = 0
-    data: List[InviteOut] = Field(default_factory=list)
-    code: Optional[str] = None
-
-
-class DeleteInviteRequest(OctoModel):
+class InviteDelete(OctoModel):
     receiver: str
