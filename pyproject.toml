@@ -3,8 +3,8 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "octobrowser"
-version = "0.1.1"
+name = "octobrowser-api"
+version = "0.1.2"
 description = "Fully-typed, sync + async Python SDK for the Octo Browser automation API."
 readme = "README.md"
 requires-python = ">=3.12"
@@ -53,7 +53,7 @@ Issues = "https://github.com/lordsinactive/octobrowser/issues"
 "Octo Browser API" = "https://octobrowser.net/api"
 
 [tool.hatch.build.targets.wheel]
-packages = ["octobrowser"]
+packages = ["octobrowser_api"]
 
 [tool.ruff]
 line-length = 88

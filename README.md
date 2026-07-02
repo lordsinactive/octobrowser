@@ -1,4 +1,4 @@
-# octobrowser
+# octobrowser-api
 
 Полностью типизированный **синхронный и асинхронный** Python SDK для API автоматизации [Octo Browser](https://octobrowser.net/).
 
@@ -29,14 +29,17 @@
 ## Установка
 
 ```bash
-pip install octobrowser
+pip install octobrowser-api
 ```
 
 Или через [uv](https://docs.astral.sh/uv/):
 
 ```bash
-uv add octobrowser
+uv add octobrowser-api
 ```
+
+> Пакет ставится как `octobrowser-api`, а импортируется как `octobrowser_api`:
+> `from octobrowser_api import OctoClient`.
 
 ---
 
@@ -45,7 +48,7 @@ uv add octobrowser
 ### Синхронно
 
 ```python
-from octobrowser import OctoClient
+from octobrowser_api import OctoClient
 
 with OctoClient(token="ВАШ_API_ТОКЕН") as octo:
     # Создание профиля (через именованные аргументы — модель ProfileCreate соберётся сама)
@@ -71,7 +74,7 @@ with OctoClient(token="ВАШ_API_ТОКЕН") as octo:
 
 ```python
 import asyncio
-from octobrowser import AsyncOctoClient
+from octobrowser_api import AsyncOctoClient
 
 async def main():
     async with AsyncOctoClient(token="ВАШ_API_ТОКЕН") as octo:
@@ -86,7 +89,7 @@ asyncio.run(main())
 `local.start(...)` возвращает объект `Browser`, у которого `ws_endpoint` — это CDP-WebSocket, который можно передать в любую библиотеку автоматизации:
 
 ```python
-from octobrowser import OctoClient
+from octobrowser_api import OctoClient
 from playwright.sync_api import sync_playwright
 
 with OctoClient(token="ВАШ_API_ТОКЕН") as octo:
@@ -121,8 +124,8 @@ profile = octo.profiles.create(
 Полный набор часто используемых полей. Фингерпринт удобно собрать типизированной моделью `Fingerprint`:
 
 ```python
-from octobrowser.models import Fingerprint
-from octobrowser.enums import OS, WindowsVersion
+from octobrowser_api.models import Fingerprint
+from octobrowser_api.enums import OS, WindowsVersion
 
 profile = octo.profiles.create(
     title="Профиль для рисёрча",
@@ -146,8 +149,8 @@ print(profile.uuid)
 Тот же результат, но весь запрос собирается одной типизированной моделью — удобно, когда конфиг профиля формируется заранее и переиспользуется:
 
 ```python
-from octobrowser.models import ProfileCreate, Fingerprint, StorageOptions, Bookmark
-from octobrowser.enums import OS, WindowsVersion, CPUCores, RAMSize
+from octobrowser_api.models import ProfileCreate, Fingerprint, StorageOptions, Bookmark
+from octobrowser_api.enums import OS, WindowsVersion, CPUCores, RAMSize
 
 config = ProfileCreate(
     title="Профиль из модели",
@@ -264,9 +267,9 @@ OctoClient(
 Фингерпринты строго типизированы. Передавайте модель `Fingerprint` или обычный словарь:
 
 ```python
-from octobrowser import OctoClient
-from octobrowser.models import Fingerprint
-from octobrowser.enums import OS, WindowsVersion
+from octobrowser_api import OctoClient
+from octobrowser_api.models import Fingerprint
+from octobrowser_api.enums import OS, WindowsVersion
 
 with OctoClient(token="...") as octo:
     fp = Fingerprint(os=OS.WIN, os_version=WindowsVersion.V11, cpu=8, ram=16)
@@ -287,7 +290,7 @@ screens = octo.fingerprints.screens(os="win")
 Журнал действий команды приходит по WebSocket как итерируемый поток объектов `ActionLogEntry`:
 
 ```python
-from octobrowser import OctoClient
+from octobrowser_api import OctoClient
 
 with OctoClient(token="...") as octo:
     with octo.action_log.stream() as stream:
@@ -314,8 +317,8 @@ async with AsyncOctoClient(token="...") as octo:
 Все ошибки наследуются от `OctoError`. Ошибки API содержат `status_code`, `code`, `message`, `body` и исходный `response`.
 
 ```python
-from octobrowser import OctoClient
-from octobrowser.exceptions import (
+from octobrowser_api import OctoClient
+from octobrowser_api.exceptions import (
     OctoError,          # базовый класс всех ошибок
     OctoAPIError,       # базовый класс всех ошибок API (HTTP)
     AuthError,          # 401 / неверный токен
