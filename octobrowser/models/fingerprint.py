@@ -4,13 +4,16 @@ from typing import Any, Dict, List, Optional, Union
 from pydantic import Field
 from ..enums import (
     OS,
+    AndroidVersion,
     Arch,
     CPUCores,
     DeviceType,
     IPMode,
+    MacOSVersion,
     Platform,
     RAMSize,
     WebRTCMode,
+    WindowsVersion,
 )
 from ._base import OctoModel
 
@@ -70,8 +73,8 @@ class MediaDevices(OctoModel):
 
 class Fingerprint(OctoModel):
     os: OS
-    os_version: Optional[str] = None
-    os_arch: Optional[str] = None
+    os_version: Optional[Union[WindowsVersion, MacOSVersion, AndroidVersion, str]] = None
+    os_arch: Optional[Union[Arch, str]] = None
     user_agent: Optional[str] = None
     screen: Optional[str] = None
     renderer: Optional[str] = None
@@ -91,8 +94,8 @@ class Fingerprint(OctoModel):
 
 class FingerprintUpdate(OctoModel):
     os: Optional[OS] = None
-    os_version: Optional[str] = None
-    os_arch: Optional[str] = None
+    os_version: Optional[Union[WindowsVersion, MacOSVersion, AndroidVersion, str]] = None
+    os_arch: Optional[Union[Arch, str]] = None
     user_agent: Optional[str] = None
     screen: Optional[str] = None
     renderer: Optional[str] = None
