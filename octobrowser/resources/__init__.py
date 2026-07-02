@@ -1,12 +1,22 @@
 from __future__ import annotations
 
-from .extensions import AsyncExtensions, Extensions
-from .fingerprints import AsyncFingerprints, Fingerprints
-from .invites import AsyncInvites, Invites
-from .profiles import AsyncProfiles, Profiles
-from .proxies import AsyncProxies, Proxies
-from .subaccounts import AsyncSubaccounts, Subaccounts
-from .tags import AsyncTags, Tags
+from .extensions import AsyncExtensions
+from .fingerprints import AsyncFingerprints
+from .invites import AsyncInvites
+from .local import AsyncLocal
+from .profiles import AsyncProfiles
+from .proxies import AsyncProxies
+from .subaccounts import AsyncSubaccounts
+from .tags import AsyncTags
+
+from sync.extensions import Extensions
+from sync.fingerprints import Fingerprints
+from sync.invites import Invites
+from sync.local import Local
+from sync.profiles import Profiles
+from sync.proxies import Proxies
+from sync.subaccounts import Subaccounts
+from sync.tags import Tags
 
 __all__ = [
     'Profiles',
@@ -16,6 +26,7 @@ __all__ = [
     'Subaccounts',
     'Invites',
     'Fingerprints',
+    'Local',
     'AsyncProfiles',
     'AsyncProxies',
     'AsyncTags',
@@ -23,4 +34,5 @@ __all__ = [
     'AsyncSubaccounts',
     'AsyncInvites',
     'AsyncFingerprints',
+    'AsyncLocal',
 ]

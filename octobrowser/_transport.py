@@ -12,6 +12,7 @@ CLOUD_BASE = 'https://app.octobrowser.net/api/v2/automation'
 LOCAL_BASE = 'http://localhost:58888/api'
 
 DEFAULT_TIMEOUT = 30.0
+LOCAL_TIMEOUT = 120.0
 DEFAULT_RETRY_BACKOFF = 30.0
 
 M = TypeVar('M', bound=BaseModel)

@@ -1,8 +1,8 @@
 from __future__ import annotations
 from typing import Any, Dict, List, Optional, Union, overload
 
-from ._base import AsyncResource, query, unwrap
-from ..models import (
+from .._base import Resource, query, unwrap
+from ...models import (
     Bookmark,
     ClearProfilePassword,
     Cookies,
@@ -32,8 +32,8 @@ from ..models import (
 )
 
 
-class AsyncProfiles(AsyncResource):
-    async def list(
+class Profiles(Resource):
+    def list(
         self,
         *,
         fields: Optional[str] = None,
@@ -49,21 +49,20 @@ class AsyncProfiles(AsyncResource):
             page_len=page_len,
             page=page,
         )
-        resp = await self._transport.request(
+        return self._transport.request(
             'GET', '/profiles', params=params, out=ListResponse[Profile]
-        )
-        return resp.data
+        ).data
 
-    async def get(self, uuid: str) -> Profile:
-        resp = await self._transport.request(
+    def get(self, uuid: str) -> Profile:
+        resp = self._transport.request(
             'GET', f'/profiles/{uuid}', out=Response[Profile]
         )
         return unwrap(resp.data)
 
     @overload
-    async def create(self, data: ProfileCreate, /) -> Profile: ...
+    def create(self, data: ProfileCreate, /) -> Profile: ...
     @overload
-    async def create(
+    def create(
         self,
         *,
         title: str,
@@ -83,19 +82,17 @@ class AsyncProfiles(AsyncResource):
         images_load_limit: Optional[int] = None,
         local_cache: Optional[bool] = None,
     ) -> Profile: ...
-    async def create(
-        self, data: Optional[ProfileCreate] = None, **fields: Any
-    ) -> Profile:
+    def create(self, data: Optional[ProfileCreate] = None, **fields: Any) -> Profile:
         body = data if data is not None else ProfileCreate(**fields)
-        resp = await self._transport.request(
+        resp = self._transport.request(
             'POST', '/profiles', body=body, out=Response[Profile]
         )
         return unwrap(resp.data)
 
     @overload
-    async def update(self, uuid: str, data: ProfileUpdate, /) -> Profile: ...
+    def update(self, uuid: str, data: ProfileUpdate, /) -> Profile: ...
     @overload
-    async def update(
+    def update(
         self,
         uuid: str,
         /,
@@ -116,45 +113,45 @@ class AsyncProfiles(AsyncResource):
         images_load_limit: Optional[int] = None,
         local_cache: Optional[bool] = None,
     ) -> Profile: ...
-    async def update(
+    def update(
         self, uuid: str, data: Optional[ProfileUpdate] = None, **fields: Any
     ) -> Profile:
         body = data if data is not None else ProfileUpdate(**fields)
-        resp = await self._transport.request(
+        resp = self._transport.request(
             'PATCH', f'/profiles/{uuid}', body=body, out=Response[Profile]
         )
         return unwrap(resp.data)
 
-    async def delete(self, uuids: List[str], *, skip_trash_bin: bool = True) -> None:
-        await self._transport.request(
+    def delete(self, uuids: List[str], *, skip_trash_bin: bool = True) -> None:
+        self._transport.request(
             'DELETE',
             '/profiles',
             body=ProfileDelete(uuids=uuids, skip_trash_bin=skip_trash_bin),
         )
 
-    async def import_cookies(
+    def import_cookies(
         self, uuid: str, cookies: List[Union[Dict[str, Any], str]]
     ) -> None:
-        await self._transport.request(
+        self._transport.request(
             'POST', f'/profiles/{uuid}/import_cookies', body=Cookies(cookies=cookies)
         )
 
-    async def force_stop(self, uuid: str, version: int) -> None:
-        await self._transport.request(
+    def force_stop(self, uuid: str, version: int) -> None:
+        self._transport.request(
             'POST',
             f'/profiles/{uuid}/force_stop',
             body=ProfileForceStop(version=version),
         )
 
-    async def force_stop_many(self, uuids: List[str]) -> None:
-        await self._transport.request(
+    def force_stop_many(self, uuids: List[str]) -> None:
+        self._transport.request(
             'POST', '/profiles/force_stop', body=ProfilesForceStop(uuids=uuids)
         )
 
-    async def set_password(
+    def set_password(
         self, uuids: List[str], password: str, *, old_password: Optional[str] = None
     ) -> None:
-        await self._transport.request(
+        self._transport.request(
             'POST',
             '/profiles/set_password',
             body=SetProfilePassword(
@@ -162,17 +159,17 @@ class AsyncProfiles(AsyncResource):
             ),
         )
 
-    async def clear_password(self, uuid: str, password: str) -> None:
-        await self._transport.request(
+    def clear_password(self, uuid: str, password: str) -> None:
+        self._transport.request(
             'POST',
             f'/profiles/{uuid}/clear_password',
             body=ClearProfilePassword(password=password),
         )
 
-    async def transfer(
+    def transfer(
         self, uuids: List[str], receiver_email: str, *, transfer_proxy: bool = False
     ) -> None:
-        await self._transport.request(
+        self._transport.request(
             'POST',
             '/profiles/transfer',
             body=TransferProfiles(
@@ -182,7 +179,7 @@ class AsyncProfiles(AsyncResource):
             ),
         )
 
-    async def export(
+    def export(
         self,
         uuids: List[str],
         *,
@@ -192,30 +189,30 @@ class AsyncProfiles(AsyncResource):
         body = ExportProfiles(
             uuids=uuids, export_proxy=export_proxy, app_version=app_version
         )
-        resp = await self._transport.request(
+        resp = self._transport.request(
             'POST', '/profiles/export', body=body, out=Response[ExportResult]
         )
         return unwrap(resp.data)
 
-    async def exports(
+    def exports(
         self, *, page: Optional[int] = None, page_len: Optional[int] = None
     ) -> ExportList:
         params = query(page=page, page_len=page_len)
-        resp = await self._transport.request(
+        resp = self._transport.request(
             'GET', '/profiles/export', params=params, out=Response[ExportList]
         )
         return unwrap(resp.data)
 
-    async def get_export(self, uuid: str) -> ExportedProfile:
-        resp = await self._transport.request(
+    def get_export(self, uuid: str) -> ExportedProfile:
+        resp = self._transport.request(
             'GET', f'/profiles/export/{uuid}', out=Response[ExportedProfile]
         )
         return unwrap(resp.data)
 
-    async def import_(
+    def import_(
         self, data: List[Union[str, ImportFileV2, ImportFileV1, Dict[str, Any]]]
     ) -> ImportResult:
-        resp = await self._transport.request(
+        resp = self._transport.request(
             'POST',
             '/profiles/import',
             body=ImportProfiles(data=data),

@@ -65,6 +65,8 @@ class RateLimitError(OctoAPIError):
 
 _CODE_MAP: Dict[str, Type[OctoAPIError]] = {
     ErrorCode.API_TOKEN: AuthError,
+    ErrorCode.NOT_AUTHENTICATED: AuthError,
+    ErrorCode.BAD_REQUEST: InvalidRequestError,
     ErrorCode.NOT_FOUND: NotFoundError,
     ErrorCode.ALREADY_EXISTS: ConflictError,
     ErrorCode.PROFILES_STARTED: ConflictError,
