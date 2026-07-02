@@ -9,14 +9,14 @@ from .proxies import AsyncProxies
 from .subaccounts import AsyncSubaccounts
 from .tags import AsyncTags
 
-from sync.extensions import Extensions
-from sync.fingerprints import Fingerprints
-from sync.invites import Invites
-from sync.local import Local
-from sync.profiles import Profiles
-from sync.proxies import Proxies
-from sync.subaccounts import Subaccounts
-from sync.tags import Tags
+from .sync.extensions import Extensions
+from .sync.fingerprints import Fingerprints
+from .sync.invites import Invites
+from .sync.local import Local
+from .sync.profiles import Profiles
+from .sync.proxies import Proxies
+from .sync.subaccounts import Subaccounts
+from .sync.tags import Tags
 
 __all__ = [
     'Profiles',
