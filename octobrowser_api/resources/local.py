@@ -8,6 +8,7 @@ from ..models import (
     ClearPassword,
     ForceStopProfile,
     Login,
+    Ok,
     SetPassword,
     StartOneTimeProfile,
     StartProfile,
@@ -27,6 +28,10 @@ class AsyncLocal(AsyncResource):
 
     async def version(self) -> UpdateInfo:
         return await self._transport.request('GET', '/update', out=UpdateInfo)
+
+    async def update(self) -> str:
+        resp = await self._transport.request('POST', '/update', out=Ok)
+        return resp.msg
 
     async def username(self) -> str:
         resp = await self._transport.request('GET', '/username', out=Username)
@@ -110,9 +115,13 @@ class AsyncLocal(AsyncResource):
             body=ClearPassword(uuid=uuid, password=password),
         )
 
-    async def login(self, email: str, password: str) -> None:
+    async def login(
+        self, email: str, password: str, *, api_token: str | None = None
+    ) -> None:
         await self._transport.request(
-            'POST', '/auth/login', body=Login(email=email, password=password)
+            'POST',
+            '/auth/login',
+            body=Login(email=email, password=password, api_token=api_token),
         )
 
     async def logout(self) -> None:

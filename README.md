@@ -2,7 +2,7 @@
 
 Полностью типизированный **синхронный и асинхронный** Python SDK для API автоматизации [Octo Browser](https://octobrowser.net/).
 
-Управляйте антидетект-профилями, прокси, тегами, фингерпринтами, участниками команды и расширениями прямо из Python — а также запускайте и останавливайте локальные браузеры и получайте журнал действий команды в реальном времени.
+Управляйте антидетект-профилями, прокси, тегами, папками, фингерпринтами, участниками команды и расширениями прямо из Python — а также запускайте и останавливайте локальные браузеры и получайте журнал действий команды в реальном времени.
 
 > Неофициальный клиент. Не связан с Octo Browser.
 
@@ -208,7 +208,7 @@ OctoClient(
 
 | Метод | Описание |
 | ----- | -------- |
-| `list(*, fields=, search=, search_tags=, page_len=, page=)` | Список профилей (пагинация, поиск). |
+| `list(*, fields=, search=, search_tags=, ordering=, page_len=, page=)` | Список профилей (пагинация, поиск, сортировка). |
 | `get(uuid)` | Получить один профиль. |
 | `create(data \| **fields)` | Создать профиль из модели `ProfileCreate` или именованных аргументов. |
 | `update(uuid, data \| **fields)` | Обновить профиль. |
@@ -222,9 +222,11 @@ OctoClient(
 | `export(uuids, *, export_proxy=False, app_version=None)` | Запустить экспорт профилей. |
 | `exports(*, page=, page_len=)` | Список прошлых экспортов. |
 | `get_export(uuid)` | Получить один экспорт. |
-| `import_(data)` | Импорт профилей из файлов экспорта. |
+| `import_(data, *, folder=None)` | Импорт профилей из файлов экспорта. |
 
 > Пагинация: `page_len` принимает только `10`, `25`, `50` или `100`; `page` начинается с `0`.
+
+> Сортировка: `ordering` принимает `created`, `active`, `title` и те же значения с префиксом `-` для убывания (енум `ProfileOrdering`).
 
 ### `local` — локальное десктопное приложение (localhost:58888)
 
@@ -232,12 +234,13 @@ OctoClient(
 | ----- | -------- |
 | `active()` | Список запущенных браузеров. |
 | `version()` | Версия приложения / информация об обновлении. |
+| `update()` | Запустить обновление приложения до последней версии; возвращает сообщение сервера. |
 | `username()` | Имя вошедшего аккаунта. |
 | `start(uuid \| data, *, headless=, debug_port=, flags=, only_local=, timeout=, password=)` | Запустить профиль; возвращает `Browser` с `ws_endpoint`. |
 | `start_one_time(profile_data \| data, *, headless=, debug_port=, flags=, timeout=)` | Запустить временный (несохранённый) профиль. |
 | `stop(uuid)` / `force_stop(uuid)` | Остановить / принудительно остановить профиль. |
 | `set_password(uuid, password)` / `clear_password(uuid, password)` | Управление локальным паролем профиля. |
-| `login(email, password)` / `logout()` | Аутентификация десктопного приложения. |
+| `login(email, password, *, api_token=None)` / `logout()` | Аутентификация десктопного приложения. |
 
 ### `proxies`
 
@@ -246,6 +249,32 @@ OctoClient(
 ### `tags`
 
 `list()` · `create(name=, color=)` · `update(uuid, ...)` · `delete(uuid)`
+
+### `folders` — папки профилей
+
+| Метод | Описание |
+| ----- | -------- |
+| `list()` | Список папок. |
+| `create(name=, assignable_wo_permission=None)` | Создать одну папку. |
+| `create_many([...])` | Создать несколько папок за один запрос. |
+| `update(folder, name=, assignable_wo_permission=)` | Переименовать папку / изменить флаг доступа. |
+| `delete(folder)` | Удалить папку. |
+
+Аргумент `folder` в `update` и `delete` принимает как UUID, так и имя папки:
+
+```python
+octo.folders.create(name="research")
+octo.folders.update("research", assignable_wo_permission=True)   # по имени
+octo.folders.delete("research")
+```
+
+Привязать профиль к папке можно при создании, обновлении и импорте — полем `folder`:
+
+```python
+octo.profiles.create(title="Профиль", fingerprint={"os": "win"}, folder="research")
+octo.profiles.update(uuid, folder="research")
+octo.profiles.import_(data, folder="research")
+```
 
 ### `fingerprints`
 
@@ -258,6 +287,8 @@ OctoClient(
 ### `subaccounts` / `invites` — управление командой
 
 `subaccounts`: `list()` · `create(email=, permissions=)` · `update(email=, permissions=)` · `delete(email)`
+
+> Права субаккаунта включают папочные: `edit_folders`, `view_all_folders`, `view_profiles_wo_folders` и `visible_folders`. В отличие от `visible_tags`, где лежат имена тегов, `visible_folders` содержит **UUID папок**.
 `invites`: `list()` · `delete(receiver)`
 
 ---

@@ -8,6 +8,7 @@ from ...models import (
     ClearPassword,
     ForceStopProfile,
     Login,
+    Ok,
     SetPassword,
     StartOneTimeProfile,
     StartProfile,
@@ -26,6 +27,9 @@ class Local(Resource):
 
     def version(self) -> UpdateInfo:
         return self._transport.request('GET', '/update', out=UpdateInfo)
+
+    def update(self) -> str:
+        return self._transport.request('POST', '/update', out=Ok).msg
 
     def username(self) -> str:
         return self._transport.request('GET', '/username', out=Username).username
@@ -106,9 +110,13 @@ class Local(Resource):
             body=ClearPassword(uuid=uuid, password=password),
         )
 
-    def login(self, email: str, password: str) -> None:
+    def login(
+        self, email: str, password: str, *, api_token: str | None = None
+    ) -> None:
         self._transport.request(
-            'POST', '/auth/login', body=Login(email=email, password=password)
+            'POST',
+            '/auth/login',
+            body=Login(email=email, password=password, api_token=api_token),
         )
 
     def logout(self) -> None:

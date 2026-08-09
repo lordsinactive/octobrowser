@@ -111,6 +111,7 @@ class AsyncProfiles(AsyncResource):
         description: str | None = None,
         start_pages: builtins.list[str] | None = None,
         tags: builtins.list[str] | None = None,
+        folder: str | None = None,
         pinned_tag: str | None = None,
         bookmarks: builtins.list[Bookmark | dict[str, Any]] | None = None,
         proxy: ProxyData | ProxyRef | dict[str, Any] | None = None,
@@ -122,6 +123,7 @@ class AsyncProfiles(AsyncResource):
         launch_args: builtins.list[str] | None = None,
         images_load_limit: int | None = None,
         local_cache: bool | None = None,
+        extra_info: dict[str, Any] | None = None,
     ) -> Profile: ...
     async def update(
         self, uuid: str, data: ProfileUpdate | None = None, **fields: Any
@@ -220,12 +222,15 @@ class AsyncProfiles(AsyncResource):
         return unwrap(resp.data)
 
     async def import_(
-        self, data: builtins.list[str | ImportFileV2 | ImportFileV1 | dict[str, Any]]
+        self,
+        data: builtins.list[str | ImportFileV2 | ImportFileV1 | dict[str, Any]],
+        *,
+        folder: str | None = None,
     ) -> ImportResult:
         resp = await self._transport.request(
             'POST',
             '/profiles/import',
-            body=ImportProfiles(data=data),
+            body=ImportProfiles(data=data, folder=folder),
             out=Response[ImportResult],
         )
         return unwrap(resp.data)

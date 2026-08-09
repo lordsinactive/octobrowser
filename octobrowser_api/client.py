@@ -1,7 +1,7 @@
 from __future__ import annotations
+
 from typing import Any
 
-from .action_log import ActionLog, AsyncActionLog
 from ._transport import (
     CLOUD_BASE,
     DEFAULT_TIMEOUT,
@@ -10,10 +10,11 @@ from ._transport import (
     AsyncTransport,
     Transport,
 )
-
+from .action_log import ActionLog, AsyncActionLog
 from .resources import (
     AsyncExtensions,
     AsyncFingerprints,
+    AsyncFolders,
     AsyncInvites,
     AsyncLocal,
     AsyncProfiles,
@@ -22,6 +23,7 @@ from .resources import (
     AsyncTags,
     Extensions,
     Fingerprints,
+    Folders,
     Invites,
     Local,
     Profiles,
@@ -50,6 +52,7 @@ class OctoClient:
         self.profiles = Profiles(self._transport)
         self.proxies = Proxies(self._transport)
         self.tags = Tags(self._transport)
+        self.folders = Folders(self._transport)
         self.extensions = Extensions(self._transport)
         self.subaccounts = Subaccounts(self._transport)
         self.invites = Invites(self._transport)
@@ -87,6 +90,7 @@ class AsyncOctoClient:
         self.profiles = AsyncProfiles(self._transport)
         self.proxies = AsyncProxies(self._transport)
         self.tags = AsyncTags(self._transport)
+        self.folders = AsyncFolders(self._transport)
         self.extensions = AsyncExtensions(self._transport)
         self.subaccounts = AsyncSubaccounts(self._transport)
         self.invites = AsyncInvites(self._transport)
