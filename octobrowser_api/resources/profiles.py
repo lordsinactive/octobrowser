@@ -3,6 +3,7 @@ from __future__ import annotations
 import builtins
 from typing import Any, overload
 
+from ..enums import ProfileOrdering
 from ..models import (
     Bookmark,
     ClearProfilePassword,
@@ -41,6 +42,7 @@ class AsyncProfiles(AsyncResource):
         fields: str | None = None,
         search: str | None = None,
         search_tags: str | None = None,
+        ordering: ProfileOrdering | str | None = None,
         page_len: int | None = None,
         page: int | None = None,
     ) -> builtins.list[Profile]:
@@ -48,6 +50,7 @@ class AsyncProfiles(AsyncResource):
             fields=fields,
             search=search,
             search_tags=search_tags,
+            ordering=ordering,
             page_len=page_len,
             page=page,
         )
@@ -74,6 +77,7 @@ class AsyncProfiles(AsyncResource):
         start_pages: builtins.list[str] | None = None,
         bookmarks: builtins.list[Bookmark | dict[str, Any]] | None = None,
         tags: builtins.list[str] | None = None,
+        folder: str | None = None,
         pinned_tag: str | None = None,
         password: str | None = None,
         proxy: ProxyData | ProxyRef | dict[str, Any] | None = None,
@@ -84,6 +88,7 @@ class AsyncProfiles(AsyncResource):
         launch_args: builtins.list[str] | None = None,
         images_load_limit: int | None = None,
         local_cache: bool | None = None,
+        extra_info: dict[str, Any] | None = None,
     ) -> Profile: ...
     async def create(
         self, data: ProfileCreate | None = None, **fields: Any
