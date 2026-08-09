@@ -1,6 +1,8 @@
 from __future__ import annotations
+
 import json
-from typing import AsyncIterator, Dict, Iterator, NoReturn, Optional
+from collections.abc import AsyncIterator, Iterator
+from typing import NoReturn
 from urllib.parse import urlencode
 
 from websockets.asyncio.client import ClientConnection as _AsyncConnection
@@ -20,9 +22,9 @@ def _ws_url(base_url: str) -> str:
 
 
 def _with_params(
-    url: str, from_timestamp: Optional[int], after_uuid: Optional[str]
+    url: str, from_timestamp: int | None, after_uuid: str | None
 ) -> str:
-    params: Dict[str, object] = {}
+    params: dict[str, object] = {}
     if from_timestamp is not None:
         params['from_timestamp'] = from_timestamp
     if after_uuid is not None:
@@ -50,11 +52,11 @@ def _raise_ws_error(exc: InvalidStatus) -> NoReturn:
 
 
 class ActionLogStream:
-    def __init__(self, url: str, headers: Dict[str, str]) -> None:
+    def __init__(self, url: str, headers: dict[str, str]) -> None:
         self._url = url
         self._headers = headers
-        self._ws: Optional[_SyncConnection] = None
-        self.watermark: Optional[ActionLogWatermark] = None
+        self._ws: _SyncConnection | None = None
+        self.watermark: ActionLogWatermark | None = None
 
     def __enter__(self) -> ActionLogStream:
         try:
@@ -77,11 +79,11 @@ class ActionLogStream:
 
 
 class AsyncActionLogStream:
-    def __init__(self, url: str, headers: Dict[str, str]) -> None:
+    def __init__(self, url: str, headers: dict[str, str]) -> None:
         self._url = url
         self._headers = headers
-        self._ws: Optional[_AsyncConnection] = None
-        self.watermark: Optional[ActionLogWatermark] = None
+        self._ws: _AsyncConnection | None = None
+        self.watermark: ActionLogWatermark | None = None
 
     async def __aenter__(self) -> AsyncActionLogStream:
         try:
@@ -113,7 +115,7 @@ class ActionLog:
         self._headers = {'X-Octo-Api-Token': token}
 
     def stream(
-        self, *, from_timestamp: Optional[int] = None, after_uuid: Optional[str] = None
+        self, *, from_timestamp: int | None = None, after_uuid: str | None = None
     ) -> ActionLogStream:
         return ActionLogStream(
             _with_params(self._url, from_timestamp, after_uuid), self._headers
@@ -126,7 +128,7 @@ class AsyncActionLog:
         self._headers = {'X-Octo-Api-Token': token}
 
     def stream(
-        self, *, from_timestamp: Optional[int] = None, after_uuid: Optional[str] = None
+        self, *, from_timestamp: int | None = None, after_uuid: str | None = None
     ) -> AsyncActionLogStream:
         return AsyncActionLogStream(
             _with_params(self._url, from_timestamp, after_uuid), self._headers

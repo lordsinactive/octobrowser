@@ -1,12 +1,14 @@
 from __future__ import annotations
-from typing import Any, List, Optional, overload
 
-from ._base import AsyncResource, unwrap
+import builtins
+from typing import Any, overload
+
 from ..models import ListResponse, Response, Tag, TagCreate, TagUpdate
+from ._base import AsyncResource, unwrap
 
 
 class AsyncTags(AsyncResource):
-    async def list(self) -> List[Tag]:
+    async def list(self) -> builtins.list[Tag]:
         resp = await self._transport.request('GET', '/tags', out=ListResponse[Tag])
         return resp.data
 
@@ -14,7 +16,7 @@ class AsyncTags(AsyncResource):
     async def create(self, data: TagCreate, /) -> Tag: ...
     @overload
     async def create(self, *, name: str, color: str = 'grey') -> Tag: ...
-    async def create(self, data: Optional[TagCreate] = None, **fields: Any) -> Tag:
+    async def create(self, data: TagCreate | None = None, **fields: Any) -> Tag:
         body = data if data is not None else TagCreate(**fields)
         resp = await self._transport.request(
             'POST', '/tags', body=body, out=Response[Tag]
@@ -25,10 +27,10 @@ class AsyncTags(AsyncResource):
     async def update(self, uuid: str, data: TagUpdate, /) -> Tag: ...
     @overload
     async def update(
-        self, uuid: str, /, *, name: str, color: Optional[str] = None
+        self, uuid: str, /, *, name: str, color: str | None = None
     ) -> Tag: ...
     async def update(
-        self, uuid: str, data: Optional[TagUpdate] = None, **fields: Any
+        self, uuid: str, data: TagUpdate | None = None, **fields: Any
     ) -> Tag:
         body = data if data is not None else TagUpdate(**fields)
         resp = await self._transport.request(

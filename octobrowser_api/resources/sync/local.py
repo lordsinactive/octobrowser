@@ -1,7 +1,7 @@
 from __future__ import annotations
-from typing import Any, Dict, List, Optional, Union, overload
 
-from .._base import Resource
+from typing import Any, overload
+
 from ...models import (
     ActiveProfiles,
     Browser,
@@ -15,10 +15,11 @@ from ...models import (
     UpdateInfo,
     Username,
 )
+from .._base import Resource
 
 
 class Local(Resource):
-    def active(self) -> List[Browser]:
+    def active(self) -> list[Browser]:
         return self._transport.request(
             'GET', '/profiles/active', out=ActiveProfiles
         ).root
@@ -39,13 +40,13 @@ class Local(Resource):
         *,
         headless: bool = False,
         debug_port: bool = False,
-        flags: Optional[List[str]] = None,
+        flags: list[str] | None = None,
         only_local: bool = True,
         timeout: int = 60,
-        password: Optional[str] = None,
+        password: str | None = None,
     ) -> Browser: ...
     def start(
-        self, data: Union[StartProfile, str, None] = None, **fields: Any
+        self, data: StartProfile | str | None = None, **fields: Any
     ) -> Browser:
         if isinstance(data, StartProfile):
             body = data
@@ -62,17 +63,17 @@ class Local(Resource):
     @overload
     def start_one_time(
         self,
-        profile_data: Dict[str, Any],
+        profile_data: dict[str, Any],
         /,
         *,
         headless: bool = True,
         debug_port: bool = True,
-        flags: Optional[List[str]] = None,
+        flags: list[str] | None = None,
         timeout: int = 60,
     ) -> Browser: ...
     def start_one_time(
         self,
-        data: Union[StartOneTimeProfile, Dict[str, Any], None] = None,
+        data: StartOneTimeProfile | dict[str, Any] | None = None,
         **fields: Any,
     ) -> Browser:
         if isinstance(data, StartOneTimeProfile):

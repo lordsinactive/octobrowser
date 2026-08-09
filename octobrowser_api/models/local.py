@@ -1,7 +1,9 @@
 from __future__ import annotations
-from typing import Any, Dict, List, Optional, Union
+
+from typing import Any, Union
 
 from pydantic import Field, RootModel
+
 from ._base import OctoModel
 
 __all__ = [
@@ -26,18 +28,18 @@ __all__ = [
 class StartProfile(OctoModel):
     uuid: str
     headless: bool = False
-    debug_port: Union[int, bool] = False
-    flags: List[str] = Field(default_factory=list)
+    debug_port: int | bool = False
+    flags: list[str] = Field(default_factory=list)
     only_local: bool = True
     timeout: int = Field(default=60, ge=0)
-    password: Optional[str] = None
+    password: str | None = None
 
 
 class StartOneTimeProfile(OctoModel):
-    profile_data: Dict[str, Any]
+    profile_data: dict[str, Any]
     headless: bool = True
     debug_port: bool = True
-    flags: List[str] = Field(default_factory=list)
+    flags: list[str] = Field(default_factory=list)
     timeout: int = Field(default=60, ge=0)
 
 
@@ -52,6 +54,7 @@ class ForceStopProfile(OctoModel):
 class Login(OctoModel):
     email: str
     password: str
+    api_token: str | None = None
 
 
 class SetPassword(OctoModel):
@@ -67,13 +70,13 @@ class ClearPassword(OctoModel):
 class Browser(OctoModel):
     uuid: str
     state: str
-    headless: Optional[bool] = None
-    start_time: Optional[int] = None
-    ws_endpoint: Optional[str] = None
-    debug_port: Optional[str] = None
+    headless: bool | None = None
+    start_time: int | None = None
+    ws_endpoint: str | None = None
+    debug_port: str | None = None
     one_time: bool = False
-    browser_pid: Optional[int] = None
-    connection_data: Optional[Dict[str, Any]] = None
+    browser_pid: int | None = None
+    connection_data: dict[str, Any] | None = None
 
 
 class Ok(OctoModel):
@@ -82,7 +85,7 @@ class Ok(OctoModel):
 
 
 class Error(OctoModel):
-    code: Optional[str] = None
+    code: str | None = None
     error: str
     error_code: int = -1
 
@@ -105,5 +108,5 @@ class LocalResult(RootModel[Union[Ok, Error]]):
     pass
 
 
-class ActiveProfiles(RootModel[List[Browser]]):
+class ActiveProfiles(RootModel[list[Browser]]):
     pass

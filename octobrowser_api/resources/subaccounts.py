@@ -1,7 +1,8 @@
 from __future__ import annotations
-from typing import Any, Dict, List, Optional, Union, overload
 
-from ._base import AsyncResource
+import builtins
+from typing import Any, overload
+
 from ..models import (
     ListResponse,
     Subaccount,
@@ -10,10 +11,11 @@ from ..models import (
     SubaccountPermissions,
     SubaccountUpdate,
 )
+from ._base import AsyncResource
 
 
 class AsyncSubaccounts(AsyncResource):
-    async def list(self) -> List[Subaccount]:
+    async def list(self) -> builtins.list[Subaccount]:
         resp = await self._transport.request(
             'GET', '/teams/subaccounts', out=ListResponse[Subaccount]
         )
@@ -26,10 +28,10 @@ class AsyncSubaccounts(AsyncResource):
         self,
         *,
         email: str,
-        permissions: Optional[Union[SubaccountPermissions, Dict[str, Any]]] = None,
+        permissions: SubaccountPermissions | dict[str, Any] | None = None,
     ) -> None: ...
     async def create(
-        self, data: Optional[SubaccountCreate] = None, **fields: Any
+        self, data: SubaccountCreate | None = None, **fields: Any
     ) -> None:
         body = data if data is not None else SubaccountCreate(**fields)
         await self._transport.request('POST', '/teams/subaccounts', body=body)
@@ -41,10 +43,10 @@ class AsyncSubaccounts(AsyncResource):
         self,
         *,
         email: str,
-        permissions: Optional[Union[SubaccountPermissions, Dict[str, Any]]] = None,
+        permissions: SubaccountPermissions | dict[str, Any] | None = None,
     ) -> None: ...
     async def update(
-        self, data: Optional[SubaccountUpdate] = None, **fields: Any
+        self, data: SubaccountUpdate | None = None, **fields: Any
     ) -> None:
         body = data if data is not None else SubaccountUpdate(**fields)
         await self._transport.request('PATCH', '/teams/subaccounts', body=body)

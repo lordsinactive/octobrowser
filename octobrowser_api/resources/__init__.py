@@ -7,8 +7,6 @@ from .local import AsyncLocal
 from .profiles import AsyncProfiles
 from .proxies import AsyncProxies
 from .subaccounts import AsyncSubaccounts
-from .tags import AsyncTags
-
 from .sync.extensions import Extensions
 from .sync.fingerprints import Fingerprints
 from .sync.invites import Invites
@@ -17,6 +15,7 @@ from .sync.profiles import Profiles
 from .sync.proxies import Proxies
 from .sync.subaccounts import Subaccounts
 from .sync.tags import Tags
+from .tags import AsyncTags
 
 __all__ = [
     'Profiles',

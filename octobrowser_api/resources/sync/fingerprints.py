@@ -1,8 +1,7 @@
 from __future__ import annotations
-from typing import List, Optional
 
-from .._base import Resource, query
 from ...models import DeviceModel, FingerprintOption, ListResponse
+from .._base import Resource, query
 
 
 class Fingerprints(Resource):
@@ -11,9 +10,9 @@ class Fingerprints(Resource):
         *,
         os: str = 'win',
         os_arch: str = 'x86',
-        page_len: Optional[int] = None,
-        page: Optional[int] = None,
-    ) -> List[FingerprintOption]:
+        page_len: int | None = None,
+        page: int | None = None,
+    ) -> list[FingerprintOption]:
         params = query(os=os, os_arch=os_arch, page_len=page_len, page=page)
         return self._transport.request(
             'GET',
@@ -24,7 +23,7 @@ class Fingerprints(Resource):
 
     def screens(
         self, *, os: str = 'win', os_arch: str = 'x86'
-    ) -> List[FingerprintOption]:
+    ) -> list[FingerprintOption]:
         params = query(os=os, os_arch=os_arch)
         return self._transport.request(
             'GET',
@@ -33,7 +32,7 @@ class Fingerprints(Resource):
             out=ListResponse[FingerprintOption],
         ).data
 
-    def device_models(self, *, device_type: Optional[str] = None) -> List[DeviceModel]:
+    def device_models(self, *, device_type: str | None = None) -> list[DeviceModel]:
         params = query(device_type=device_type)
         return self._transport.request(
             'GET',

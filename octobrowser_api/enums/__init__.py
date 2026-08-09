@@ -14,7 +14,7 @@ from .fingerprint import (
     WebRTCMode,
     WindowsVersion,
 )
-from .profiles import ProfileField
+from .profiles import ProfileField, ProfileOrdering
 from .proxy import ProxyType
 
 __all__ = [
@@ -32,5 +32,6 @@ __all__ = [
     'MacOSVersion',
     'AndroidVersion',
     'ProfileField',
+    'ProfileOrdering',
     'ProxyType',
 ]

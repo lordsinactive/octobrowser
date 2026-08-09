@@ -2,10 +2,11 @@ from __future__ import annotations
 
 import asyncio
 import time
-from typing import Any, Dict, Optional, Type, TypeVar, overload
+from typing import Any, TypeVar, overload
 
 import httpx
 from pydantic import BaseModel
+
 from .exceptions import RateLimitError, raise_for_response
 
 CLOUD_BASE = 'https://app.octobrowser.net/api/v2/automation'
@@ -27,7 +28,7 @@ class Transport:
         self,
         base_url: str,
         *,
-        token: Optional[str] = None,
+        token: str | None = None,
         timeout: float = DEFAULT_TIMEOUT,
         wait_on_rate_limit: bool = False,
     ) -> None:
@@ -41,9 +42,9 @@ class Transport:
         method: str,
         path: str,
         *,
-        params: Optional[Dict[str, Any]] = None,
+        params: dict[str, Any] | None = None,
         json: Any = None,
-        body: Optional[BaseModel] = None,
+        body: BaseModel | None = None,
         out: None = None,
     ) -> httpx.Response: ...
 
@@ -53,10 +54,10 @@ class Transport:
         method: str,
         path: str,
         *,
-        params: Optional[Dict[str, Any]] = None,
+        params: dict[str, Any] | None = None,
         json: Any = None,
-        body: Optional[BaseModel] = None,
-        out: Type[M],
+        body: BaseModel | None = None,
+        out: type[M],
     ) -> M: ...
 
     def request(
@@ -64,10 +65,10 @@ class Transport:
         method: str,
         path: str,
         *,
-        params: Optional[Dict[str, Any]] = None,
+        params: dict[str, Any] | None = None,
         json: Any = None,
-        body: Optional[BaseModel] = None,
-        out: Optional[Type[M]] = None,
+        body: BaseModel | None = None,
+        out: type[M] | None = None,
     ) -> Any:
         payload = _serialize(body) if body is not None else json
         while True:
@@ -103,7 +104,7 @@ class AsyncTransport:
         self,
         base_url: str,
         *,
-        token: Optional[str] = None,
+        token: str | None = None,
         timeout: float = DEFAULT_TIMEOUT,
         wait_on_rate_limit: bool = False,
     ) -> None:
@@ -119,9 +120,9 @@ class AsyncTransport:
         method: str,
         path: str,
         *,
-        params: Optional[Dict[str, Any]] = None,
+        params: dict[str, Any] | None = None,
         json: Any = None,
-        body: Optional[BaseModel] = None,
+        body: BaseModel | None = None,
         out: None = None,
     ) -> httpx.Response: ...
 
@@ -131,10 +132,10 @@ class AsyncTransport:
         method: str,
         path: str,
         *,
-        params: Optional[Dict[str, Any]] = None,
+        params: dict[str, Any] | None = None,
         json: Any = None,
-        body: Optional[BaseModel] = None,
-        out: Type[M],
+        body: BaseModel | None = None,
+        out: type[M],
     ) -> M: ...
 
     async def request(
@@ -142,10 +143,10 @@ class AsyncTransport:
         method: str,
         path: str,
         *,
-        params: Optional[Dict[str, Any]] = None,
+        params: dict[str, Any] | None = None,
         json: Any = None,
-        body: Optional[BaseModel] = None,
-        out: Optional[Type[M]] = None,
+        body: BaseModel | None = None,
+        out: type[M] | None = None,
     ) -> Any:
         payload = _serialize(body) if body is not None else json
         while True:

@@ -1,7 +1,8 @@
 from __future__ import annotations
-from typing import Any, Dict, List, Optional, Union, overload
 
-from .._base import Resource
+import builtins
+from typing import Any, overload
+
 from ...models import (
     ListResponse,
     Subaccount,
@@ -10,10 +11,11 @@ from ...models import (
     SubaccountPermissions,
     SubaccountUpdate,
 )
+from .._base import Resource
 
 
 class Subaccounts(Resource):
-    def list(self) -> List[Subaccount]:
+    def list(self) -> builtins.list[Subaccount]:
         return self._transport.request(
             'GET', '/teams/subaccounts', out=ListResponse[Subaccount]
         ).data
@@ -25,9 +27,9 @@ class Subaccounts(Resource):
         self,
         *,
         email: str,
-        permissions: Optional[Union[SubaccountPermissions, Dict[str, Any]]] = None,
+        permissions: SubaccountPermissions | dict[str, Any] | None = None,
     ) -> None: ...
-    def create(self, data: Optional[SubaccountCreate] = None, **fields: Any) -> None:
+    def create(self, data: SubaccountCreate | None = None, **fields: Any) -> None:
         body = data if data is not None else SubaccountCreate(**fields)
         self._transport.request('POST', '/teams/subaccounts', body=body)
 
@@ -38,9 +40,9 @@ class Subaccounts(Resource):
         self,
         *,
         email: str,
-        permissions: Optional[Union[SubaccountPermissions, Dict[str, Any]]] = None,
+        permissions: SubaccountPermissions | dict[str, Any] | None = None,
     ) -> None: ...
-    def update(self, data: Optional[SubaccountUpdate] = None, **fields: Any) -> None:
+    def update(self, data: SubaccountUpdate | None = None, **fields: Any) -> None:
         body = data if data is not None else SubaccountUpdate(**fields)
         self._transport.request('PATCH', '/teams/subaccounts', body=body)
 

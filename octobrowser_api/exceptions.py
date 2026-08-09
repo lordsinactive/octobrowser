@@ -1,7 +1,9 @@
 from __future__ import annotations
-from typing import Any, Dict, Optional, Tuple, Type
+
+from typing import Any
 
 import httpx
+
 from .enums import ErrorCode
 
 
@@ -14,10 +16,10 @@ class OctoAPIError(OctoError):
         self,
         message: str = '',
         *,
-        status_code: Optional[int] = None,
-        code: Optional[str] = None,
+        status_code: int | None = None,
+        code: str | None = None,
         body: Any = None,
-        response: Optional[httpx.Response] = None,
+        response: httpx.Response | None = None,
     ) -> None:
         self.status_code = status_code
         self.code = code
@@ -57,13 +59,13 @@ class InvalidRequestError(OctoAPIError):
 
 class RateLimitError(OctoAPIError):
     def __init__(
-        self, *args: Any, retry_after: Optional[float] = None, **kwargs: Any
+        self, *args: Any, retry_after: float | None = None, **kwargs: Any
     ) -> None:
         self.retry_after = retry_after
         super().__init__(*args, **kwargs)
 
 
-_CODE_MAP: Dict[str, Type[OctoAPIError]] = {
+_CODE_MAP: dict[str, type[OctoAPIError]] = {
     ErrorCode.API_TOKEN: AuthError,
     ErrorCode.NOT_AUTHENTICATED: AuthError,
     ErrorCode.BAD_REQUEST: InvalidRequestError,
@@ -80,7 +82,7 @@ _CODE_MAP: Dict[str, Type[OctoAPIError]] = {
     ErrorCode.PROFILES_ALREADY_STARTED: ConflictError,
 }
 
-_STATUS_MAP: Dict[int, Type[OctoAPIError]] = {
+_STATUS_MAP: dict[int, type[OctoAPIError]] = {
     401: AuthError,
     403: ForbiddenError,
     404: NotFoundError,
@@ -90,7 +92,7 @@ _STATUS_MAP: Dict[int, Type[OctoAPIError]] = {
 }
 
 
-def _extract(body: Any) -> Tuple[Optional[str], str, bool]:
+def _extract(body: Any) -> tuple[str | None, str, bool]:
     if isinstance(body, dict):
         if 'validation_error' in body or 'detail' in body:
             return None, 'Request validation failed', True
@@ -102,8 +104,8 @@ def _extract(body: Any) -> Tuple[Optional[str], str, bool]:
 
 
 def _classify(
-    status: int, code: Optional[str], is_validation: bool
-) -> Type[OctoAPIError]:
+    status: int, code: str | None, is_validation: bool
+) -> type[OctoAPIError]:
     if is_validation:
         return InvalidRequestError
     if code and code in _CODE_MAP:

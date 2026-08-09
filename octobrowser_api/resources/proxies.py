@@ -1,13 +1,15 @@
 from __future__ import annotations
-from typing import Any, List, Optional, overload
 
-from ._base import AsyncResource, unwrap
+import builtins
+from typing import Any, overload
+
 from ..enums import ProxyType
 from ..models import ListResponse, Proxy, ProxyCreate, ProxyUpdate, Response
+from ._base import AsyncResource, unwrap
 
 
 class AsyncProxies(AsyncResource):
-    async def list(self) -> List[Proxy]:
+    async def list(self) -> builtins.list[Proxy]:
         resp = await self._transport.request('GET', '/proxies', out=ListResponse[Proxy])
         return resp.data
 
@@ -21,12 +23,12 @@ class AsyncProxies(AsyncResource):
         host: str,
         port: int,
         title: str,
-        login: Optional[str] = None,
-        password: Optional[str] = None,
-        change_ip_url: Optional[str] = None,
-        external_id: Optional[str] = None,
+        login: str | None = None,
+        password: str | None = None,
+        change_ip_url: str | None = None,
+        external_id: str | None = None,
     ) -> Proxy: ...
-    async def create(self, data: Optional[ProxyCreate] = None, **fields: Any) -> Proxy:
+    async def create(self, data: ProxyCreate | None = None, **fields: Any) -> Proxy:
         body = data if data is not None else ProxyCreate(**fields)
         resp = await self._transport.request(
             'POST', '/proxies', body=body, out=Response[Proxy]
@@ -41,17 +43,17 @@ class AsyncProxies(AsyncResource):
         uuid: str,
         /,
         *,
-        type: Optional[ProxyType] = None,
-        host: Optional[str] = None,
-        port: Optional[int] = None,
-        login: Optional[str] = None,
-        password: Optional[str] = None,
-        change_ip_url: Optional[str] = None,
-        title: Optional[str] = None,
-        external_id: Optional[str] = None,
+        type: ProxyType | None = None,
+        host: str | None = None,
+        port: int | None = None,
+        login: str | None = None,
+        password: str | None = None,
+        change_ip_url: str | None = None,
+        title: str | None = None,
+        external_id: str | None = None,
     ) -> Proxy: ...
     async def update(
-        self, uuid: str, data: Optional[ProxyUpdate] = None, **fields: Any
+        self, uuid: str, data: ProxyUpdate | None = None, **fields: Any
     ) -> Proxy:
         body = data if data is not None else ProxyUpdate(**fields)
         resp = await self._transport.request(

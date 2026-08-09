@@ -1,5 +1,6 @@
 from __future__ import annotations
-from typing import Any, Dict, List, Optional, Union
+
+from typing import Any
 
 from ._base import OctoModel
 
@@ -29,7 +30,7 @@ class Extension(OctoModel):
 
 
 class ExtensionsDelete(OctoModel):
-    uuids: List[str]
+    uuids: list[str]
 
 
 class ProxyPermissions(OctoModel):
@@ -70,32 +71,36 @@ class SubaccountPermissions(OctoModel):
     manage_team: bool = False
     edit_tags: bool = False
     view_all_tags: bool = False
+    edit_folders: bool = False
+    view_all_folders: bool = False
     manage_action_log: bool = False
-    proxies: Optional[ProxyPermissions] = None
-    paid_proxies: Optional[PaidProxyPermissions] = None
-    profiles: Optional[ProfilePermissions] = None
-    templates: Optional[TemplatePermissions] = None
-    extensions: Optional[ExtensionPermissions] = None
-    tasks: Optional[TaskPermissions] = None
-    visible_tags: Optional[List[str]] = None
+    proxies: ProxyPermissions | None = None
+    paid_proxies: PaidProxyPermissions | None = None
+    profiles: ProfilePermissions | None = None
+    templates: TemplatePermissions | None = None
+    extensions: ExtensionPermissions | None = None
+    tasks: TaskPermissions | None = None
+    visible_tags: list[str] | None = None
+    visible_folders: list[str] | None = None
+    view_profiles_wo_folders: bool = False
 
 
 class Subaccount(OctoModel):
     uuid: str
     email: str
     master: bool = False
-    created_at: Optional[str] = None
-    permissions: Optional[SubaccountPermissions] = None
+    created_at: str | None = None
+    permissions: SubaccountPermissions | None = None
 
 
 class SubaccountCreate(OctoModel):
     email: str
-    permissions: Optional[Union[SubaccountPermissions, Dict[str, Any]]] = None
+    permissions: SubaccountPermissions | dict[str, Any] | None = None
 
 
 class SubaccountUpdate(OctoModel):
     email: str
-    permissions: Optional[Union[SubaccountPermissions, Dict[str, Any]]] = None
+    permissions: SubaccountPermissions | dict[str, Any] | None = None
 
 
 class SubaccountDelete(OctoModel):
@@ -104,7 +109,7 @@ class SubaccountDelete(OctoModel):
 
 class Invite(OctoModel):
     receiver: str
-    created_at: Optional[str] = None
+    created_at: str | None = None
 
 
 class InviteDelete(OctoModel):

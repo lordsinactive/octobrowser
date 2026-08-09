@@ -1,7 +1,8 @@
 from __future__ import annotations
+
 from enum import StrEnum
 
-__all__ = ['ProfileField']
+__all__ = ['ProfileField', 'ProfileOrdering']
 
 
 class ProfileField(StrEnum):
@@ -23,3 +24,12 @@ class ProfileField(StrEnum):
     IMAGES_LOAD_LIMIT = 'images_load_limit'
     LOCAL_CACHE = 'local_cache'
     EXTRA_INFO = 'extra_info'
+
+
+class ProfileOrdering(StrEnum):
+    CREATED = 'created'
+    CREATED_DESC = '-created'
+    ACTIVE = 'active'
+    ACTIVE_DESC = '-active'
+    TITLE = 'title'
+    TITLE_DESC = '-title'

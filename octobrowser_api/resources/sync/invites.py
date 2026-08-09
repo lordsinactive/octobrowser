@@ -1,12 +1,13 @@
 from __future__ import annotations
-from typing import List
 
-from .._base import Resource
+import builtins
+
 from ...models import Invite, InviteDelete, ListResponse
+from .._base import Resource
 
 
 class Invites(Resource):
-    def list(self) -> List[Invite]:
+    def list(self) -> builtins.list[Invite]:
         return self._transport.request(
             'GET', '/teams/invites', out=ListResponse[Invite]
         ).data

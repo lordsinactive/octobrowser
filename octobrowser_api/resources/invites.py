@@ -1,12 +1,13 @@
 from __future__ import annotations
-from typing import List
 
-from ._base import AsyncResource
+import builtins
+
 from ..models import Invite, InviteDelete, ListResponse
+from ._base import AsyncResource
 
 
 class AsyncInvites(AsyncResource):
-    async def list(self) -> List[Invite]:
+    async def list(self) -> builtins.list[Invite]:
         resp = await self._transport.request(
             'GET', '/teams/invites', out=ListResponse[Invite]
         )

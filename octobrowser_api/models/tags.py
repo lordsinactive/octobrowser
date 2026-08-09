@@ -1,5 +1,4 @@
 from __future__ import annotations
-from typing import Optional
 
 from ._base import OctoModel
 
@@ -17,10 +16,10 @@ class TagCreate(OctoModel):
 
 class TagUpdate(OctoModel):
     name: str
-    color: Optional[str] = None
+    color: str | None = None
 
 
 class Tag(OctoModel):
     uuid: str
     name: str
-    color: Optional[str] = None
+    color: str | None = None

@@ -1,19 +1,21 @@
 from __future__ import annotations
-from typing import Any, List, Optional, overload
 
-from .._base import Resource, unwrap
+import builtins
+from typing import Any, overload
+
 from ...models import ListResponse, Response, Tag, TagCreate, TagUpdate
+from .._base import Resource, unwrap
 
 
 class Tags(Resource):
-    def list(self) -> List[Tag]:
+    def list(self) -> builtins.list[Tag]:
         return self._transport.request('GET', '/tags', out=ListResponse[Tag]).data
 
     @overload
     def create(self, data: TagCreate, /) -> Tag: ...
     @overload
     def create(self, *, name: str, color: str = 'grey') -> Tag: ...
-    def create(self, data: Optional[TagCreate] = None, **fields: Any) -> Tag:
+    def create(self, data: TagCreate | None = None, **fields: Any) -> Tag:
         body = data if data is not None else TagCreate(**fields)
         resp = self._transport.request('POST', '/tags', body=body, out=Response[Tag])
         return unwrap(resp.data)
@@ -22,9 +24,9 @@ class Tags(Resource):
     def update(self, uuid: str, data: TagUpdate, /) -> Tag: ...
     @overload
     def update(
-        self, uuid: str, /, *, name: str, color: Optional[str] = None
+        self, uuid: str, /, *, name: str, color: str | None = None
     ) -> Tag: ...
-    def update(self, uuid: str, data: Optional[TagUpdate] = None, **fields: Any) -> Tag:
+    def update(self, uuid: str, data: TagUpdate | None = None, **fields: Any) -> Tag:
         body = data if data is not None else TagUpdate(**fields)
         resp = self._transport.request(
             'PATCH', f'/tags/{uuid}', body=body, out=Response[Tag]

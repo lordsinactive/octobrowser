@@ -1,7 +1,9 @@
 from __future__ import annotations
-from typing import Any, Dict, List, Optional, Union
+
+from typing import Any
 
 from pydantic import Field, HttpUrl
+
 from ..enums import ProxyType
 from ._base import OctoModel
 from .fingerprint import Fingerprint, FingerprintUpdate
@@ -50,86 +52,90 @@ class StorageOptions(OctoModel):
 
 
 class Cookies(OctoModel):
-    cookies: List[Union[Dict[str, Any], str]]
+    cookies: list[dict[str, Any] | str]
 
 
 class ProfileCreate(OctoModel):
     title: str
-    fingerprint: Union[Fingerprint, Dict[str, Any]]
-    description: Optional[str] = None
-    start_pages: Optional[List[str]] = None
-    bookmarks: Optional[List[Union[Bookmark, Dict[str, Any]]]] = None
-    tags: Optional[List[str]] = None
-    pinned_tag: Optional[str] = None
-    password: Optional[str] = None
-    proxy: Optional[Union[ProxyData, ProxyRef, Dict[str, Any]]] = None
-    storage_options: Optional[Union[StorageOptions, Dict[str, Any]]] = None
-    cookies: Optional[List[Union[Dict[str, Any], str]]] = None
-    image: Optional[str] = None
-    extensions: Optional[List[str]] = None
-    launch_args: Optional[List[str]] = None
-    images_load_limit: Optional[int] = Field(default=None, ge=0)
-    local_cache: Optional[bool] = None
+    fingerprint: Fingerprint | dict[str, Any]
+    description: str | None = None
+    start_pages: list[str] | None = None
+    bookmarks: list[Bookmark | dict[str, Any]] | None = None
+    tags: list[str] | None = None
+    folder: str | None = None
+    pinned_tag: str | None = None
+    password: str | None = None
+    proxy: ProxyData | ProxyRef | dict[str, Any] | None = None
+    storage_options: StorageOptions | dict[str, Any] | None = None
+    cookies: list[dict[str, Any] | str] | None = None
+    image: str | None = None
+    extensions: list[str] | None = None
+    launch_args: list[str] | None = None
+    images_load_limit: int | None = Field(default=None, ge=0)
+    local_cache: bool | None = None
+    extra_info: dict[str, Any] | None = None
 
 
 class ProfileUpdate(OctoModel):
-    title: Optional[str] = None
-    description: Optional[str] = None
-    start_pages: Optional[List[str]] = None
-    tags: Optional[List[str]] = None
-    pinned_tag: Optional[str] = None
-    bookmarks: Optional[List[Union[Bookmark, Dict[str, Any]]]] = None
-    proxy: Optional[Union[ProxyData, ProxyRef, Dict[str, Any]]] = None
-    storage_options: Optional[Union[StorageOptions, Dict[str, Any]]] = None
-    cookies: Optional[List[Union[Dict[str, Any], str]]] = None
-    image: Optional[str] = None
-    fingerprint: Optional[Union[FingerprintUpdate, Dict[str, Any]]] = None
-    extensions: Optional[List[str]] = None
-    launch_args: Optional[List[str]] = None
-    images_load_limit: Optional[int] = Field(default=None, ge=0)
-    local_cache: Optional[bool] = None
+    title: str | None = None
+    description: str | None = None
+    start_pages: list[str] | None = None
+    tags: list[str] | None = None
+    folder: str | None = None
+    pinned_tag: str | None = None
+    bookmarks: list[Bookmark | dict[str, Any]] | None = None
+    proxy: ProxyData | ProxyRef | dict[str, Any] | None = None
+    storage_options: StorageOptions | dict[str, Any] | None = None
+    cookies: list[dict[str, Any] | str] | None = None
+    image: str | None = None
+    fingerprint: FingerprintUpdate | dict[str, Any] | None = None
+    extensions: list[str] | None = None
+    launch_args: list[str] | None = None
+    images_load_limit: int | None = Field(default=None, ge=0)
+    local_cache: bool | None = None
+    extra_info: dict[str, Any] | None = None
 
 
 class ProfileProxy(OctoModel):
-    uuid: Optional[str] = None
-    type: Optional[ProxyType] = None
-    host: Optional[str] = None
-    port: Optional[int] = None
-    login: Optional[str] = None
-    password: Optional[str] = None
-    change_ip_url: Optional[str] = None
-    external_id: Optional[str] = None
+    uuid: str | None = None
+    type: ProxyType | None = None
+    host: str | None = None
+    port: int | None = None
+    login: str | None = None
+    password: str | None = None
+    change_ip_url: str | None = None
+    external_id: str | None = None
 
 
 class Profile(OctoModel):
     uuid: str
-    title: Optional[str] = None
-    description: Optional[str] = None
-    start_pages: Optional[List[str]] = None
-    tags: Optional[List[str]] = None
-    folder: Optional[str] = None
-    pinned_tag: Optional[str] = None
-    has_user_password: Optional[bool] = None
-    password_set_at: Optional[str] = None
-    proxy: Optional[ProfileProxy] = None
-    status: Optional[int] = None
-    version: Optional[str] = None
-    storage_options: Optional[StorageOptions] = None
-    fingerprint: Optional[Dict[str, Any]] = None
-    bookmarks: Optional[List[Dict[str, Any]]] = None
-    extensions: Optional[List[Any]] = None
-    image: Optional[str] = None
-    launch_args: Optional[List[str]] = None
-    images_load_limit: Optional[int] = None
-    local_cache: Optional[bool] = None
-    last_active: Optional[str] = None
-    created_at: Optional[str] = None
-    updated_at: Optional[str] = None
+    title: str | None = None
+    description: str | None = None
+    start_pages: list[str] | None = None
+    tags: list[str] | None = None
+    folder: str | None = None
+    pinned_tag: str | None = None
+    has_user_password: bool | None = None
+    password_set_at: str | None = None
+    proxy: ProfileProxy | None = None
+    status: int | None = None
+    version: str | None = None
+    storage_options: StorageOptions | None = None
+    fingerprint: dict[str, Any] | None = None
+    bookmarks: list[dict[str, Any]] | None = None
+    extensions: list[Any] | None = None
+    image: str | None = None
+    launch_args: list[str] | None = None
+    images_load_limit: int | None = None
+    local_cache: bool | None = None
+    last_active: str | None = None
+    created_at: str | None = None
+    updated_at: str | None = None
     extra_info: Any = None
 
 
 class ProfileDelete(OctoModel):
-    uuids: List[str]
+    uuids: list[str]
     skip_trash_bin: bool = True
 
 
@@ -138,13 +144,13 @@ class ProfileForceStop(OctoModel):
 
 
 class ProfilesForceStop(OctoModel):
-    uuids: List[str]
+    uuids: list[str]
 
 
 class SetProfilePassword(OctoModel):
-    profiles: List[str]
+    profiles: list[str]
     password: str
-    old_password: Optional[str] = None
+    old_password: str | None = None
 
 
 class ClearProfilePassword(OctoModel):
@@ -152,15 +158,15 @@ class ClearProfilePassword(OctoModel):
 
 
 class TransferProfiles(OctoModel):
-    uuids: List[str]
+    uuids: list[str]
     receiver_email: str
     transfer_proxy: bool
 
 
 class ExportProfiles(OctoModel):
-    uuids: List[str]
+    uuids: list[str]
     export_proxy: bool
-    app_version: Optional[str] = None
+    app_version: str | None = None
 
 
 class ImportDataV1(OctoModel):
@@ -174,37 +180,38 @@ class ImportDataV2(OctoModel):
 
 
 class ImportFileV1(OctoModel):
-    data: Union[ImportDataV1, Dict[str, Any]]
+    data: ImportDataV1 | dict[str, Any]
     signature: str
 
 
 class ImportFileV2(OctoModel):
-    data: Union[ImportDataV2, Dict[str, Any]]
-    uuid: Optional[str] = None
-    title: Optional[str] = None
+    data: ImportDataV2 | dict[str, Any]
+    uuid: str | None = None
+    title: str | None = None
 
 
 class ImportProfiles(OctoModel):
-    data: List[Union[str, ImportFileV2, ImportFileV1, Dict[str, Any]]]
+    data: list[str | ImportFileV2 | ImportFileV1 | dict[str, Any]]
+    folder: str | None = None
 
 
 class ExportedProfile(OctoModel):
     uuid: str
-    title: Optional[str] = None
+    title: str | None = None
     data: str
 
 
 class ExportResult(OctoModel):
-    exported: List[ExportedProfile] = Field(default_factory=list)
-    failed: List[str] = Field(default_factory=list)
+    exported: list[ExportedProfile] = Field(default_factory=list)
+    failed: list[str] = Field(default_factory=list)
 
 
 class ExportList(OctoModel):
-    data: List[ExportedProfile] = Field(default_factory=list)
+    data: list[ExportedProfile] = Field(default_factory=list)
     total: int = 0
     page: int = 0
 
 
 class ImportResult(OctoModel):
-    failed: List[str] = Field(default_factory=list)
-    imported: Optional[List[str]] = None
+    failed: list[str] = Field(default_factory=list)
+    imported: list[str] | None = None

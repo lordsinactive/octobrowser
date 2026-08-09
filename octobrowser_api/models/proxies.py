@@ -1,7 +1,7 @@
 from __future__ import annotations
-from typing import Optional
 
 from pydantic import Field
+
 from ..enums import ProxyType
 from ._base import OctoModel
 
@@ -22,9 +22,9 @@ class ProxyData(OctoModel):
     type: ProxyType
     host: str
     port: int = Field(ge=1, le=65535)
-    login: Optional[str] = None
-    password: Optional[str] = None
-    change_ip_url: Optional[str] = None
+    login: str | None = None
+    password: str | None = None
+    change_ip_url: str | None = None
 
 
 class ProxyCreate(OctoModel):
@@ -32,21 +32,21 @@ class ProxyCreate(OctoModel):
     host: str
     port: int = Field(ge=1, le=65535)
     title: str
-    login: Optional[str] = None
-    password: Optional[str] = None
-    change_ip_url: Optional[str] = None
-    external_id: Optional[str] = None
+    login: str | None = None
+    password: str | None = None
+    change_ip_url: str | None = None
+    external_id: str | None = None
 
 
 class ProxyUpdate(OctoModel):
-    type: Optional[ProxyType] = None
-    host: Optional[str] = None
-    port: Optional[int] = Field(default=None, ge=1, le=65535)
-    login: Optional[str] = None
-    password: Optional[str] = None
-    change_ip_url: Optional[str] = None
-    title: Optional[str] = None
-    external_id: Optional[str] = None
+    type: ProxyType | None = None
+    host: str | None = None
+    port: int | None = Field(default=None, ge=1, le=65535)
+    login: str | None = None
+    password: str | None = None
+    change_ip_url: str | None = None
+    title: str | None = None
+    external_id: str | None = None
 
 
 class Proxy(OctoModel):
@@ -54,9 +54,9 @@ class Proxy(OctoModel):
     type: ProxyType
     host: str
     port: int
-    profiles_count: Optional[int] = None
-    login: Optional[str] = None
-    password: Optional[str] = None
-    change_ip_url: Optional[str] = None
-    external_id: Optional[str] = None
-    title: Optional[str] = None
+    profiles_count: int | None = None
+    login: str | None = None
+    password: str | None = None
+    change_ip_url: str | None = None
+    external_id: str | None = None
+    title: str | None = None

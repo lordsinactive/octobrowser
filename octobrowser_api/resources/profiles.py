@@ -1,7 +1,8 @@
 from __future__ import annotations
-from typing import Any, Dict, List, Optional, Union, overload
 
-from ._base import AsyncResource, query, unwrap
+import builtins
+from typing import Any, overload
+
 from ..models import (
     Bookmark,
     ClearProfilePassword,
@@ -30,18 +31,19 @@ from ..models import (
     StorageOptions,
     TransferProfiles,
 )
+from ._base import AsyncResource, query, unwrap
 
 
 class AsyncProfiles(AsyncResource):
     async def list(
         self,
         *,
-        fields: Optional[str] = None,
-        search: Optional[str] = None,
-        search_tags: Optional[str] = None,
-        page_len: Optional[int] = None,
-        page: Optional[int] = None,
-    ) -> List[Profile]:
+        fields: str | None = None,
+        search: str | None = None,
+        search_tags: str | None = None,
+        page_len: int | None = None,
+        page: int | None = None,
+    ) -> builtins.list[Profile]:
         params = query(
             fields=fields,
             search=search,
@@ -67,24 +69,24 @@ class AsyncProfiles(AsyncResource):
         self,
         *,
         title: str,
-        fingerprint: Union[Fingerprint, Dict[str, Any]],
-        description: Optional[str] = None,
-        start_pages: Optional[List[str]] = None,
-        bookmarks: Optional[List[Union[Bookmark, Dict[str, Any]]]] = None,
-        tags: Optional[List[str]] = None,
-        pinned_tag: Optional[str] = None,
-        password: Optional[str] = None,
-        proxy: Optional[Union[ProxyData, ProxyRef, Dict[str, Any]]] = None,
-        storage_options: Optional[Union[StorageOptions, Dict[str, Any]]] = None,
-        cookies: Optional[List[Union[Dict[str, Any], str]]] = None,
-        image: Optional[str] = None,
-        extensions: Optional[List[str]] = None,
-        launch_args: Optional[List[str]] = None,
-        images_load_limit: Optional[int] = None,
-        local_cache: Optional[bool] = None,
+        fingerprint: Fingerprint | dict[str, Any],
+        description: str | None = None,
+        start_pages: builtins.list[str] | None = None,
+        bookmarks: builtins.list[Bookmark | dict[str, Any]] | None = None,
+        tags: builtins.list[str] | None = None,
+        pinned_tag: str | None = None,
+        password: str | None = None,
+        proxy: ProxyData | ProxyRef | dict[str, Any] | None = None,
+        storage_options: StorageOptions | dict[str, Any] | None = None,
+        cookies: builtins.list[dict[str, Any] | str] | None = None,
+        image: str | None = None,
+        extensions: builtins.list[str] | None = None,
+        launch_args: builtins.list[str] | None = None,
+        images_load_limit: int | None = None,
+        local_cache: bool | None = None,
     ) -> Profile: ...
     async def create(
-        self, data: Optional[ProfileCreate] = None, **fields: Any
+        self, data: ProfileCreate | None = None, **fields: Any
     ) -> Profile:
         body = data if data is not None else ProfileCreate(**fields)
         resp = await self._transport.request(
@@ -100,24 +102,24 @@ class AsyncProfiles(AsyncResource):
         uuid: str,
         /,
         *,
-        title: Optional[str] = None,
-        description: Optional[str] = None,
-        start_pages: Optional[List[str]] = None,
-        tags: Optional[List[str]] = None,
-        pinned_tag: Optional[str] = None,
-        bookmarks: Optional[List[Union[Bookmark, Dict[str, Any]]]] = None,
-        proxy: Optional[Union[ProxyData, ProxyRef, Dict[str, Any]]] = None,
-        storage_options: Optional[Union[StorageOptions, Dict[str, Any]]] = None,
-        cookies: Optional[List[Union[Dict[str, Any], str]]] = None,
-        image: Optional[str] = None,
-        fingerprint: Optional[Union[FingerprintUpdate, Dict[str, Any]]] = None,
-        extensions: Optional[List[str]] = None,
-        launch_args: Optional[List[str]] = None,
-        images_load_limit: Optional[int] = None,
-        local_cache: Optional[bool] = None,
+        title: str | None = None,
+        description: str | None = None,
+        start_pages: builtins.list[str] | None = None,
+        tags: builtins.list[str] | None = None,
+        pinned_tag: str | None = None,
+        bookmarks: builtins.list[Bookmark | dict[str, Any]] | None = None,
+        proxy: ProxyData | ProxyRef | dict[str, Any] | None = None,
+        storage_options: StorageOptions | dict[str, Any] | None = None,
+        cookies: builtins.list[dict[str, Any] | str] | None = None,
+        image: str | None = None,
+        fingerprint: FingerprintUpdate | dict[str, Any] | None = None,
+        extensions: builtins.list[str] | None = None,
+        launch_args: builtins.list[str] | None = None,
+        images_load_limit: int | None = None,
+        local_cache: bool | None = None,
     ) -> Profile: ...
     async def update(
-        self, uuid: str, data: Optional[ProfileUpdate] = None, **fields: Any
+        self, uuid: str, data: ProfileUpdate | None = None, **fields: Any
     ) -> Profile:
         body = data if data is not None else ProfileUpdate(**fields)
         resp = await self._transport.request(
@@ -125,7 +127,7 @@ class AsyncProfiles(AsyncResource):
         )
         return unwrap(resp.data)
 
-    async def delete(self, uuids: List[str], *, skip_trash_bin: bool = True) -> None:
+    async def delete(self, uuids: builtins.list[str], *, skip_trash_bin: bool = True) -> None:
         await self._transport.request(
             'DELETE',
             '/profiles',
@@ -133,7 +135,7 @@ class AsyncProfiles(AsyncResource):
         )
 
     async def import_cookies(
-        self, uuid: str, cookies: List[Union[Dict[str, Any], str]]
+        self, uuid: str, cookies: builtins.list[dict[str, Any] | str]
     ) -> None:
         await self._transport.request(
             'POST', f'/profiles/{uuid}/import_cookies', body=Cookies(cookies=cookies)
@@ -146,13 +148,13 @@ class AsyncProfiles(AsyncResource):
             body=ProfileForceStop(version=version),
         )
 
-    async def force_stop_many(self, uuids: List[str]) -> None:
+    async def force_stop_many(self, uuids: builtins.list[str]) -> None:
         await self._transport.request(
             'POST', '/profiles/force_stop', body=ProfilesForceStop(uuids=uuids)
         )
 
     async def set_password(
-        self, uuids: List[str], password: str, *, old_password: Optional[str] = None
+        self, uuids: builtins.list[str], password: str, *, old_password: str | None = None
     ) -> None:
         await self._transport.request(
             'POST',
@@ -170,7 +172,7 @@ class AsyncProfiles(AsyncResource):
         )
 
     async def transfer(
-        self, uuids: List[str], receiver_email: str, *, transfer_proxy: bool = False
+        self, uuids: builtins.list[str], receiver_email: str, *, transfer_proxy: bool = False
     ) -> None:
         await self._transport.request(
             'POST',
@@ -184,10 +186,10 @@ class AsyncProfiles(AsyncResource):
 
     async def export(
         self,
-        uuids: List[str],
+        uuids: builtins.list[str],
         *,
         export_proxy: bool = False,
-        app_version: Optional[str] = None,
+        app_version: str | None = None,
     ) -> ExportResult:
         body = ExportProfiles(
             uuids=uuids, export_proxy=export_proxy, app_version=app_version
@@ -198,7 +200,7 @@ class AsyncProfiles(AsyncResource):
         return unwrap(resp.data)
 
     async def exports(
-        self, *, page: Optional[int] = None, page_len: Optional[int] = None
+        self, *, page: int | None = None, page_len: int | None = None
     ) -> ExportList:
         params = query(page=page, page_len=page_len)
         resp = await self._transport.request(
@@ -213,7 +215,7 @@ class AsyncProfiles(AsyncResource):
         return unwrap(resp.data)
 
     async def import_(
-        self, data: List[Union[str, ImportFileV2, ImportFileV1, Dict[str, Any]]]
+        self, data: builtins.list[str | ImportFileV2 | ImportFileV1 | dict[str, Any]]
     ) -> ImportResult:
         resp = await self._transport.request(
             'POST',

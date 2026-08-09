@@ -1,7 +1,9 @@
 from __future__ import annotations
-from typing import Any, Dict, List, Optional, Union
+
+from typing import Any
 
 from pydantic import Field
+
 from ..enums import (
     OS,
     AndroidVersion,
@@ -40,22 +42,22 @@ class GeoCoordinates(OctoModel):
 
 class Geolocation(OctoModel):
     type: IPMode
-    data: Optional[Union[GeoCoordinates, Dict[str, Any]]] = None
+    data: GeoCoordinates | dict[str, Any] | None = None
 
 
 class Languages(OctoModel):
     type: IPMode
-    data: Optional[List[str]] = None
+    data: list[str] | None = None
 
 
 class Timezone(OctoModel):
     type: IPMode
-    data: Optional[str] = None
+    data: str | None = None
 
 
 class WebRTC(OctoModel):
     type: WebRTCMode
-    data: Optional[str] = None
+    data: str | None = None
 
 
 class Noise(OctoModel):
@@ -73,55 +75,59 @@ class MediaDevices(OctoModel):
 
 class Fingerprint(OctoModel):
     os: OS
-    os_version: Optional[Union[WindowsVersion, MacOSVersion, AndroidVersion, str]] = None
-    os_arch: Optional[Union[Arch, str]] = None
-    user_agent: Optional[str] = None
-    screen: Optional[str] = None
-    renderer: Optional[str] = None
-    languages: Optional[Union[Languages, Dict[str, Any]]] = None
-    timezone: Optional[Union[Timezone, Dict[str, Any]]] = None
-    geolocation: Optional[Union[Geolocation, Dict[str, Any]]] = None
-    cpu: Optional[CPUCores] = None
-    ram: Optional[RAMSize] = None
-    noise: Optional[Union[Noise, Dict[str, Any]]] = None
-    webrtc: Optional[Union[WebRTC, Dict[str, Any]]] = None
-    dns: Optional[str] = None
-    fonts: Optional[List[str]] = None
-    media_devices: Optional[Union[MediaDevices, Dict[str, Any]]] = None
-    device_model: Optional[str] = None
-    device_type: Optional[DeviceType] = None
+    os_version: WindowsVersion | MacOSVersion | AndroidVersion | str | None = (
+        None
+    )
+    os_arch: Arch | str | None = None
+    user_agent: str | None = None
+    screen: str | None = None
+    renderer: str | None = None
+    languages: Languages | dict[str, Any] | None = None
+    timezone: Timezone | dict[str, Any] | None = None
+    geolocation: Geolocation | dict[str, Any] | None = None
+    cpu: CPUCores | None = None
+    ram: RAMSize | None = None
+    noise: Noise | dict[str, Any] | None = None
+    webrtc: WebRTC | dict[str, Any] | None = None
+    dns: str | None = None
+    fonts: list[str] | None = None
+    media_devices: MediaDevices | dict[str, Any] | None = None
+    device_model: str | None = None
+    device_type: DeviceType | None = None
 
 
 class FingerprintUpdate(OctoModel):
-    os: Optional[OS] = None
-    os_version: Optional[Union[WindowsVersion, MacOSVersion, AndroidVersion, str]] = None
-    os_arch: Optional[Union[Arch, str]] = None
-    user_agent: Optional[str] = None
-    screen: Optional[str] = None
-    renderer: Optional[str] = None
-    languages: Optional[Union[Languages, Dict[str, Any]]] = None
-    timezone: Optional[Union[Timezone, Dict[str, Any]]] = None
-    geolocation: Optional[Union[Geolocation, Dict[str, Any]]] = None
-    cpu: Optional[CPUCores] = None
-    ram: Optional[RAMSize] = None
-    noise: Optional[Union[Noise, Dict[str, Any]]] = None
-    webrtc: Optional[Union[WebRTC, Dict[str, Any]]] = None
-    dns: Optional[str] = None
-    fonts: Optional[List[str]] = None
-    media_devices: Optional[Union[MediaDevices, Dict[str, Any]]] = None
-    device_model: Optional[str] = None
-    device_type: Optional[DeviceType] = None
+    os: OS | None = None
+    os_version: WindowsVersion | MacOSVersion | AndroidVersion | str | None = (
+        None
+    )
+    os_arch: Arch | str | None = None
+    user_agent: str | None = None
+    screen: str | None = None
+    renderer: str | None = None
+    languages: Languages | dict[str, Any] | None = None
+    timezone: Timezone | dict[str, Any] | None = None
+    geolocation: Geolocation | dict[str, Any] | None = None
+    cpu: CPUCores | None = None
+    ram: RAMSize | None = None
+    noise: Noise | dict[str, Any] | None = None
+    webrtc: WebRTC | dict[str, Any] | None = None
+    dns: str | None = None
+    fonts: list[str] | None = None
+    media_devices: MediaDevices | dict[str, Any] | None = None
+    device_model: str | None = None
+    device_type: DeviceType | None = None
 
 
 class FingerprintOption(OctoModel):
     value: str
     platform: Platform
-    archs: List[Arch]
+    archs: list[Arch]
 
 
 class DeviceModel(OctoModel):
     value: str
     os: OS
-    os_versions: List[str] = Field(default_factory=list)
-    archs: List[Arch] = Field(default_factory=list)
-    device_type: Optional[DeviceType] = None
+    os_versions: list[str] = Field(default_factory=list)
+    archs: list[Arch] = Field(default_factory=list)
+    device_type: DeviceType | None = None

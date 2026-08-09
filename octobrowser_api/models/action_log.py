@@ -1,7 +1,7 @@
 from __future__ import annotations
-from typing import List, Optional
 
 from pydantic import Field
+
 from ._base import OctoModel
 
 __all__ = [
@@ -15,10 +15,10 @@ class ActionLogEntry(OctoModel):
     uuid: str
     action: str
     time: int
-    user_email: Optional[str] = None
-    object_type: Optional[str] = None
-    object_id: Optional[str] = None
-    object_title: Optional[str] = None
+    user_email: str | None = None
+    object_type: str | None = None
+    object_id: str | None = None
+    object_title: str | None = None
 
 
 class ActionLogWatermark(OctoModel):
@@ -27,5 +27,5 @@ class ActionLogWatermark(OctoModel):
 
 
 class ActionLogPage(OctoModel):
-    items: List[ActionLogEntry] = Field(default_factory=list)
-    watermark: Optional[ActionLogWatermark] = None
+    items: list[ActionLogEntry] = Field(default_factory=list)
+    watermark: ActionLogWatermark | None = None
