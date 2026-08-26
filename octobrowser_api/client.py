@@ -39,7 +39,9 @@ class OctoClient:
         token: str,
         *,
         base_url: str = CLOUD_BASE,
+        local_base_url: str = LOCAL_BASE,
         timeout: float = DEFAULT_TIMEOUT,
+        local_timeout: float = LOCAL_TIMEOUT,
         wait_on_rate_limit: bool = False,
     ) -> None:
         self._transport = Transport(
@@ -48,7 +50,7 @@ class OctoClient:
             timeout=timeout,
             wait_on_rate_limit=wait_on_rate_limit,
         )
-        self._local_transport = Transport(LOCAL_BASE, timeout=LOCAL_TIMEOUT)
+        self._local_transport = Transport(local_base_url, timeout=local_timeout)
         self.profiles = Profiles(self._transport)
         self.proxies = Proxies(self._transport)
         self.tags = Tags(self._transport)
@@ -77,7 +79,9 @@ class AsyncOctoClient:
         token: str,
         *,
         base_url: str = CLOUD_BASE,
+        local_base_url: str = LOCAL_BASE,
         timeout: float = DEFAULT_TIMEOUT,
+        local_timeout: float = LOCAL_TIMEOUT,
         wait_on_rate_limit: bool = False,
     ) -> None:
         self._transport = AsyncTransport(
@@ -86,7 +90,7 @@ class AsyncOctoClient:
             timeout=timeout,
             wait_on_rate_limit=wait_on_rate_limit,
         )
-        self._local_transport = AsyncTransport(LOCAL_BASE, timeout=LOCAL_TIMEOUT)
+        self._local_transport = AsyncTransport(local_base_url, timeout=local_timeout)
         self.profiles = AsyncProfiles(self._transport)
         self.proxies = AsyncProxies(self._transport)
         self.tags = AsyncTags(self._transport)

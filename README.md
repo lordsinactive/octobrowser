@@ -184,7 +184,9 @@ OctoClient(
     token: str,
     *,
     base_url: str = "https://app.octobrowser.net/api/v2/automation",
+    local_base_url: str = "http://localhost:58888/api",
     timeout: float = 30.0,
+    local_timeout: float = 120.0,
     wait_on_rate_limit: bool = False,
 )
 ```
@@ -193,7 +195,9 @@ OctoClient(
 | -------------------- | ----------------------------------------------------------------------------------- |
 | `token`              | API-токен Octo Browser, отправляется в заголовке `X-Octo-Api-Token`.                |
 | `base_url`           | Переопределение базового URL Cloud API (например, для тестов).                       |
-| `timeout`            | Таймаут запроса Cloud API в секундах. Для Local API используется 120 с.             |
+| `local_base_url`     | Переопределение базового URL Local API (например, другой порт или удалённый хост).   |
+| `timeout`            | Таймаут запроса Cloud API в секундах.                                               |
+| `local_timeout`      | Таймаут запроса Local API в секундах.                                               |
 | `wait_on_rate_limit` | Если `True`, при HTTP 429 клиент ждёт `Retry-After` секунд и повторяет запрос.       |
 
 Оба клиента — контекстные менеджеры. Вне блока `with` вызывайте `octo.close()` (sync) или `await octo.aclose()` (async), чтобы освободить соединения.
