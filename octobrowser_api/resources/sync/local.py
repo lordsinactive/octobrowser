@@ -48,10 +48,9 @@ class Local(Resource):
         only_local: bool = True,
         timeout: int = 60,
         password: str | None = None,
+        profile_data: dict[str, Any] | None = None,
     ) -> Browser: ...
-    def start(
-        self, data: StartProfile | str | None = None, **fields: Any
-    ) -> Browser:
+    def start(self, data: StartProfile | str | None = None, **fields: Any) -> Browser:
         if isinstance(data, StartProfile):
             body = data
         elif data is not None:
@@ -110,9 +109,7 @@ class Local(Resource):
             body=ClearPassword(uuid=uuid, password=password),
         )
 
-    def login(
-        self, email: str, password: str, *, api_token: str | None = None
-    ) -> None:
+    def login(self, email: str, password: str, *, api_token: str | None = None) -> None:
         self._transport.request(
             'POST',
             '/auth/login',

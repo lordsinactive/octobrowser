@@ -3,6 +3,7 @@ from __future__ import annotations
 import builtins
 from typing import Any, overload
 
+from ..enums import TagColor
 from ..models import ListResponse, Response, Tag, TagCreate, TagUpdate
 from ._base import AsyncResource, unwrap
 
@@ -15,7 +16,7 @@ class AsyncTags(AsyncResource):
     @overload
     async def create(self, data: TagCreate, /) -> Tag: ...
     @overload
-    async def create(self, *, name: str, color: str = 'grey') -> Tag: ...
+    async def create(self, *, name: str, color: TagColor = TagColor.GREY) -> Tag: ...
     async def create(self, data: TagCreate | None = None, **fields: Any) -> Tag:
         body = data if data is not None else TagCreate(**fields)
         resp = await self._transport.request(
@@ -27,7 +28,7 @@ class AsyncTags(AsyncResource):
     async def update(self, uuid: str, data: TagUpdate, /) -> Tag: ...
     @overload
     async def update(
-        self, uuid: str, /, *, name: str, color: str | None = None
+        self, uuid: str, /, *, name: str, color: TagColor | None = None
     ) -> Tag: ...
     async def update(
         self, uuid: str, data: TagUpdate | None = None, **fields: Any

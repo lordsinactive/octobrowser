@@ -148,7 +148,7 @@ class AsyncProfiles(AsyncResource):
             'POST', f'/profiles/{uuid}/import_cookies', body=Cookies(cookies=cookies)
         )
 
-    async def force_stop(self, uuid: str, version: int) -> None:
+    async def force_stop(self, uuid: str, version: int | None = None) -> None:
         await self._transport.request(
             'POST',
             f'/profiles/{uuid}/force_stop',

@@ -51,6 +51,7 @@ class AsyncLocal(AsyncResource):
         only_local: bool = True,
         timeout: int = 60,
         password: str | None = None,
+        profile_data: dict[str, Any] | None = None,
     ) -> Browser: ...
     async def start(
         self, data: StartProfile | str | None = None, **fields: Any

@@ -140,7 +140,7 @@ class ProfileDelete(OctoModel):
 
 
 class ProfileForceStop(OctoModel):
-    version: int = Field(gt=0)
+    version: int | None = Field(default=None, gt=0)
 
 
 class ProfilesForceStop(OctoModel):

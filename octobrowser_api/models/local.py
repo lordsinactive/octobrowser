@@ -5,6 +5,7 @@ from typing import Any, Union
 from pydantic import Field, RootModel
 
 from ._base import OctoModel
+from .action_log import ConnectionData
 
 __all__ = [
     'StartProfile',
@@ -33,6 +34,7 @@ class StartProfile(OctoModel):
     only_local: bool = True
     timeout: int = Field(default=60, ge=0)
     password: str | None = None
+    profile_data: dict[str, Any] | None = None
 
 
 class StartOneTimeProfile(OctoModel):
@@ -76,7 +78,7 @@ class Browser(OctoModel):
     debug_port: str | None = None
     one_time: bool = False
     browser_pid: int | None = None
-    connection_data: dict[str, Any] | None = None
+    connection_data: ConnectionData | None = None
 
 
 class Ok(OctoModel):

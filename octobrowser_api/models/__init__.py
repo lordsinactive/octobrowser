@@ -1,7 +1,13 @@
 from __future__ import annotations
 
 from ._base import ListResponse, OctoModel, Response
-from .action_log import ActionLogEntry, ActionLogPage, ActionLogWatermark
+from .action_log import (
+    ActionLogData,
+    ActionLogEntry,
+    ActionLogPage,
+    ActionLogWatermark,
+    ConnectionData,
+)
 from .common import (
     CloudValidationError,
     ErrorResponse,
@@ -71,6 +77,8 @@ from .proxies import (
     ProxyData,
     ProxyRef,
     ProxyUpdate,
+    VPNProxyCreate,
+    VPNProxyUpdate,
 )
 from .tags import Tag, TagCreate, TagUpdate
 from .teams import (
@@ -98,6 +106,8 @@ __all__ = [
     'ActionLogEntry',
     'ActionLogWatermark',
     'ActionLogPage',
+    'ActionLogData',
+    'ConnectionData',
     'ErrorResponse',
     'ValidationError',
     'HTTPValidationError',
@@ -118,6 +128,8 @@ __all__ = [
     'ProxyData',
     'ProxyCreate',
     'ProxyUpdate',
+    'VPNProxyCreate',
+    'VPNProxyUpdate',
     'Proxy',
     'TagCreate',
     'TagUpdate',

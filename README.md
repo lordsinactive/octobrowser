@@ -218,7 +218,7 @@ OctoClient(
 | `update(uuid, data \| **fields)` | Обновить профиль. |
 | `delete(uuids, *, skip_trash_bin=True)` | Удалить профили по списку UUID. |
 | `import_cookies(uuid, cookies)` | Импорт cookies (список словарей или строк в формате Netscape). |
-| `force_stop(uuid, version)` | Принудительно остановить один запущенный профиль. |
+| `force_stop(uuid, version=None)` | Принудительно остановить один запущенный профиль (`version` — необязательная проверка консистентности). |
 | `force_stop_many(uuids)` | Принудительно остановить несколько профилей. |
 | `set_password(uuids, password, *, old_password=None)` | Установить пароль профиля. |
 | `clear_password(uuid, password)` | Снять пароль профиля. |
@@ -240,7 +240,7 @@ OctoClient(
 | `version()` | Версия приложения / информация об обновлении. |
 | `update()` | Запустить обновление приложения до последней версии; возвращает сообщение сервера. |
 | `username()` | Имя вошедшего аккаунта. |
-| `start(uuid \| data, *, headless=, debug_port=, flags=, only_local=, timeout=, password=)` | Запустить профиль; возвращает `Browser` с `ws_endpoint`. |
+| `start(uuid \| data, *, headless=, debug_port=, flags=, only_local=, timeout=, password=, profile_data=)` | Запустить профиль; возвращает `Browser` с `ws_endpoint`. |
 | `start_one_time(profile_data \| data, *, headless=, debug_port=, flags=, timeout=)` | Запустить временный (несохранённый) профиль. |
 | `stop(uuid)` / `force_stop(uuid)` | Остановить / принудительно остановить профиль. |
 | `set_password(uuid, password)` / `clear_password(uuid, password)` | Управление локальным паролем профиля. |
@@ -250,9 +250,30 @@ OctoClient(
 
 `list()` · `create(...)` · `update(uuid, ...)` · `delete(uuid)`
 
+Обычный прокси и VPN — две формы одного метода, различаются по `type`:
+
+```python
+from octobrowser_api.enums import ProxyType, SynMode
+
+octo.proxies.create(
+    type=ProxyType.SOCKS5, host='1.1.1.1', port=5555, title='socks', login='user', password='pass'
+)
+
+octo.proxies.create(
+    type=ProxyType.VPN,
+    title='wg',
+    conf=base64.b64encode(wireguard_conf).decode(),   # конфиг WireGuard/AWG с строкой Endpoint = host:port
+    syn_mode=SynMode.PROFILE_BASED,                   # TCP/IP-отпечаток туннеля
+)
+```
+
+В VPN-форме `host`, `port`, `login`, `password` и `change_ip_url` не принимаются — эндпоинт берётся из конфига. `update(...)` в форме VPN конвертирует обычный прокси в VPN (нужны `type='vpn'` и `conf`), а для уже VPN-прокси `type` можно не передавать.
+
 ### `tags`
 
 `list()` · `create(name=, color=)` · `update(uuid, ...)` · `delete(uuid)`
+
+Цвет — енум `TagColor`: `grey`, `blue`, `cyan`, `orange`, `green`, `purple`, `red`, `yellow`.
 
 ### `folders` — папки профилей
 
@@ -331,6 +352,7 @@ with OctoClient(token="...") as octo:
     with octo.action_log.stream() as stream:
         for entry in stream:
             print(entry)
+            # entry.action — енум ActionType, entry.data.connection_data — гео/ISP запуска
             # `stream.watermark` хранит последнюю обработанную позицию для возобновления
 ```
 

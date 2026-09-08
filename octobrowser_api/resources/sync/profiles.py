@@ -145,7 +145,7 @@ class Profiles(Resource):
             'POST', f'/profiles/{uuid}/import_cookies', body=Cookies(cookies=cookies)
         )
 
-    def force_stop(self, uuid: str, version: int) -> None:
+    def force_stop(self, uuid: str, version: int | None = None) -> None:
         self._transport.request(
             'POST',
             f'/profiles/{uuid}/force_stop',

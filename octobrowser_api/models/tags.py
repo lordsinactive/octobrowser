@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from ..enums import TagColor
 from ._base import OctoModel
 
 __all__ = [
@@ -11,15 +12,15 @@ __all__ = [
 
 class TagCreate(OctoModel):
     name: str
-    color: str = 'grey'
+    color: TagColor = TagColor.GREY
 
 
 class TagUpdate(OctoModel):
     name: str
-    color: str | None = None
+    color: TagColor | None = None
 
 
 class Tag(OctoModel):
     uuid: str
     name: str
-    color: str | None = None
+    color: TagColor | None = None
