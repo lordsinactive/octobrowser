@@ -6,6 +6,7 @@ __all__ = ['ActionType']
 
 
 class ActionType(StrEnum):
+    PROFILES_CREATED = 'profiles.created'
     PROFILES_STARTED = 'profiles.started'
     PROFILES_STOPPED = 'profiles.stopped'
     PROFILES_FORCE_STOPPED = 'profiles.force_stopped'
