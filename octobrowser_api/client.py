@@ -18,6 +18,7 @@ from .resources import (
     AsyncInvites,
     AsyncLocal,
     AsyncProfiles,
+    AsyncProviders,
     AsyncProxies,
     AsyncSubaccounts,
     AsyncTags,
@@ -27,6 +28,7 @@ from .resources import (
     Invites,
     Local,
     Profiles,
+    Providers,
     Proxies,
     Subaccounts,
     Tags,
@@ -60,6 +62,7 @@ class OctoClient:
         self.invites = Invites(self._transport)
         self.fingerprints = Fingerprints(self._transport)
         self.local = Local(self._local_transport)
+        self.providers = Providers(self._local_transport)
         self.action_log = ActionLog(token, base_url=base_url)
 
     def close(self) -> None:
@@ -100,6 +103,7 @@ class AsyncOctoClient:
         self.invites = AsyncInvites(self._transport)
         self.fingerprints = AsyncFingerprints(self._transport)
         self.local = AsyncLocal(self._local_transport)
+        self.providers = AsyncProviders(self._local_transport)
         self.action_log = AsyncActionLog(token, base_url=base_url)
 
     async def aclose(self) -> None:

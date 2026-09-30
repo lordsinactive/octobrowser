@@ -97,15 +97,16 @@ def _extract(body: Any) -> tuple[str | None, str, bool]:
         if 'validation_error' in body or 'detail' in body:
             return None, 'Request validation failed', True
         if 'success' in body:
+            error = body.get('error')
+            if isinstance(error, dict):
+                return error.get('code'), error.get('message') or '', False
             return body.get('code'), body.get('msg') or '', False
         if 'error' in body:
             return body.get('code'), body.get('error') or '', False
     return None, '', False
 
 
-def _classify(
-    status: int, code: str | None, is_validation: bool
-) -> type[OctoAPIError]:
+def _classify(status: int, code: str | None, is_validation: bool) -> type[OctoAPIError]:
     if is_validation:
         return InvalidRequestError
     if code and code in _CODE_MAP:
@@ -120,7 +121,8 @@ def raise_for_response(response: httpx.Response) -> None:
         body = None
 
     is_error = response.is_error or (
-        isinstance(body, dict) and (body.get('success') is False or 'error' in body)
+        isinstance(body, dict)
+        and (body.get('success') is False or body.get('error') is not None)
     )
     if not is_error:
         return

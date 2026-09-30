@@ -18,14 +18,14 @@ class OctoModel(BaseModel):
 
 class Response(OctoModel, Generic[T]):
     success: bool = True
-    msg: str = ''
+    msg: str | None = ''
     code: str | None = None
     data: T | None = None
 
 
 class ListResponse(OctoModel, Generic[T]):
     success: bool = True
-    msg: str = ''
+    msg: str | None = ''
     code: str | None = None
     data: list[T] = Field(default_factory=list)
     total_count: int = 0

@@ -16,7 +16,7 @@ from .fingerprint import (
     WindowsVersion,
 )
 from .profiles import ProfileField, ProfileOrdering
-from .proxy import ProxyType, SynMode, VPNProtocol
+from .proxy import ProviderFeature, ProxyKind, ProxyType, SynMode, VPNProtocol
 from .tags import TagColor
 
 __all__ = [
@@ -37,6 +37,8 @@ __all__ = [
     'ProfileField',
     'ProfileOrdering',
     'ProxyType',
+    'ProxyKind',
+    'ProviderFeature',
     'SynMode',
     'VPNProtocol',
     'TagColor',

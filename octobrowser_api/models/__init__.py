@@ -71,6 +71,14 @@ from .profiles import (
     StorageOptions,
     TransferProfiles,
 )
+from .providers import (
+    Location,
+    ProviderProxy,
+    ProviderProxyList,
+    ProviderProxyMeta,
+    ProxyProvider,
+    ProxyPurchase,
+)
 from .proxies import (
     Proxy,
     ProxyCreate,
@@ -131,6 +139,12 @@ __all__ = [
     'VPNProxyCreate',
     'VPNProxyUpdate',
     'Proxy',
+    'ProxyProvider',
+    'Location',
+    'ProxyPurchase',
+    'ProviderProxyMeta',
+    'ProviderProxy',
+    'ProviderProxyList',
     'TagCreate',
     'TagUpdate',
     'Tag',

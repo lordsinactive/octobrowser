@@ -46,4 +46,6 @@ class ErrorCode(StrEnum):
     SUBSCRIPTIONS_INACTIVE = 'subscriptions.inactive'
     PROXY_PROVIDERS_EMPTY_BALANCE = 'proxy_providers.empty_balance'
     PROXY_MAXIMUM_SAVED_ERROR = 'proxy.maximum_saved_error'
+    PROXY_PROVIDERS_INVALID = 'proxy_providers.invalid'
+    PROXY_PROVIDERS_NOT_EXISTS = 'proxy_providers.not_exists'
     CLIENT_UPDATE_FAILED = 'client.update_failed'

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from enum import StrEnum
 
-__all__ = ['ProxyType', 'SynMode', 'VPNProtocol']
+__all__ = ['ProxyType', 'SynMode', 'VPNProtocol', 'ProxyKind', 'ProviderFeature']
 
 
 class ProxyType(StrEnum):
@@ -24,3 +24,18 @@ class SynMode(StrEnum):
 
 class VPNProtocol(StrEnum):
     WIREGUARD = 'wireguard'
+
+
+class ProxyKind(StrEnum):
+    RESIDENTIAL = 'residential'
+    MOBILE = 'mobile'
+    DATA_CENTER = 'data_center'
+
+
+class ProviderFeature(StrEnum):
+    HAS_REGIONS = 'has_regions'
+    HAS_CITIES = 'has_cities'
+    HAS_ISP = 'has_isp'
+    HAS_OS = 'has_os'
+    IP_CHANGING = 'ip_changing'
+    SUPPORTS_UDP = 'supports_udp'

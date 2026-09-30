@@ -246,6 +246,37 @@ OctoClient(
 | `set_password(uuid, password)` / `clear_password(uuid, password)` | Управление локальным паролем профиля. |
 | `login(email, password, *, api_token=None)` / `logout()` | Аутентификация десктопного приложения. |
 
+### `providers` — прокси провайдеров (Local API, localhost:58888)
+
+Встроенные провайдеры прокси Octo Browser: список локаций и выпуск прокси по стране, региону, городу и оператору. Работает через запущенное десктопное приложение.
+
+| Метод | Описание |
+| ----- | -------- |
+| `list(kind=ProxyKind.RESIDENTIAL)` | Провайдеры для типа прокси (`residential`, `mobile`, `data_center`). |
+| `countries(provider_uuid, kind=)` | Доступные страны. |
+| `regions(provider_uuid, kind, country, *, isp=None)` | Регионы страны; для мобильных прокси регионы привязаны к оператору. |
+| `cities(provider_uuid, kind, country, region, *, isp=None)` | Города региона. |
+| `isps(provider_uuid, kind, country)` | Операторы (мобильные прокси). |
+| `purchase(data \| **fields)` | Выпустить прокси: `provider_uuid, kind, country, region=, city=, isp=, quantity=`. Возвращает список `ProviderProxy`. |
+| `proxies()` | Прокси, созданные в приложении. |
+| `delete(uuids)` | Удалить прокси. |
+
+```python
+from octobrowser_api.enums import ProxyKind
+
+nodyx = next(p for p in octo.providers.list() if p.vendor == 'nodyx')
+
+octo.providers.regions(nodyx.uuid, ProxyKind.RESIDENTIAL, 'IT')
+octo.providers.cities(nodyx.uuid, ProxyKind.RESIDENTIAL, 'IT', 'lazio')
+
+proxy = octo.providers.purchase(
+    provider_uuid=nodyx.uuid, kind=ProxyKind.RESIDENTIAL, country='IT', region='lazio', city='rome'
+)[0]
+octo.profiles.create(title='Rome', fingerprint={'os': 'win'}, proxy={'uuid': proxy.uuid})
+```
+
+> Выпуск прокси бесплатный, трафик списывается при использовании. Коды регионов и городов у каждого провайдера свои, берите их из `regions` / `cities`.
+
 ### `proxies`
 
 `list()` · `create(...)` · `update(uuid, ...)` · `delete(uuid)`
