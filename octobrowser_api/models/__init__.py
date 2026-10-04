@@ -32,6 +32,7 @@ from .folders import Folder, FolderCreate, FoldersCreate, FolderUpdate
 from .local import (
     ActiveProfiles,
     Browser,
+    BrowserConnectionData,
     ClearPassword,
     Error,
     ForceStopProfile,
@@ -198,6 +199,7 @@ __all__ = [
     'SetPassword',
     'ClearPassword',
     'Browser',
+    'BrowserConnectionData',
     'Ok',
     'Error',
     'UpdateInfo',

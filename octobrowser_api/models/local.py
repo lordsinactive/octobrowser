@@ -5,7 +5,6 @@ from typing import Any, Union
 from pydantic import Field, RootModel
 
 from ._base import OctoModel
-from .action_log import ConnectionData
 
 __all__ = [
     'StartProfile',
@@ -15,6 +14,7 @@ __all__ = [
     'Login',
     'SetPassword',
     'ClearPassword',
+    'BrowserConnectionData',
     'Browser',
     'Ok',
     'Error',
@@ -69,6 +69,12 @@ class ClearPassword(OctoModel):
     password: str
 
 
+class BrowserConnectionData(OctoModel):
+    ip: str | None = None
+    country: str | None = None
+    supports_udp: bool | None = None
+
+
 class Browser(OctoModel):
     uuid: str
     state: str
@@ -78,7 +84,7 @@ class Browser(OctoModel):
     debug_port: str | None = None
     one_time: bool = False
     browser_pid: int | None = None
-    connection_data: ConnectionData | None = None
+    connection_data: BrowserConnectionData | None = None
 
 
 class Ok(OctoModel):
